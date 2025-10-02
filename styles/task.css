@@ -1,0 +1,158 @@
+/* Основний контейнер, який займає всю ширину */
+.task-row {
+    display: flex; /* Вмикаємо Flexbox для розміщення вмісту в рядок */
+    align-items: center; /* Вирівнюємо елементи вертикально по центру */
+    width: 100%;
+    margin: 15px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa; /* Світло-сірий фон */
+    border-left: 5px solid; /* Кольорова смуга зліва */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Кольори лівої смуги (залежно від секції) */
+.task-row[data-section="drivers"] {
+    border-left-color: #28a745; /* Зелений для Drivers */
+}
+.task-row[data-section="blockers"] {
+    border-left-color: #dc3545; /* Червоний для Blockers */
+}
+.task-row[data-section="accelerators"] {
+    border-left-color: #ffc107; /* Жовтий для Accelerators */
+}
+
+/* --------------------
+   1. Лівий Блок (Інформація)
+   -------------------- */
+.task-info {
+    flex-grow: 1; /* Займає всю доступну ширину */
+    padding-right: 20px;
+}
+
+.task-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0 0 5px 0;
+}
+
+.visible-benefit {
+    font-size: 0.9em;
+    color: #555;
+    margin: 0 0 10px 0;
+}
+
+.benefit-label {
+    font-weight: bold;
+    color: #007bff;
+    margin-right: 5px;
+}
+
+/* Опис (Прихований) */
+.task-description-details {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.hidden-desc {
+    display: none; /* 🛑 ПРИХОВУЄМО ОПИС ЗА ЗАМОВЧУВАННЯМ */
+}
+
+.desc-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.toggle-desc-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 0.85em;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 5px;
+}
+.toggle-desc-btn:hover {
+    text-decoration: underline;
+}
+
+/* --------------------
+   2. Центральний Блок (Метрики)
+   -------------------- */
+.task-metrics-group {
+    display: flex;
+    gap: 20px;
+    min-width: 250px; /* Фіксована мінімальна ширина для метрик */
+    padding: 0 20px;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+
+.metric-item {
+    text-align: center;
+}
+
+.metric-value {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #495057;
+}
+
+.metric-label {
+    display: block;
+    font-size: 0.7em;
+    color: #6c757d;
+    text-transform: uppercase;
+}
+
+/* --------------------
+   3. Правий Блок (Дія)
+   -------------------- */
+.task-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-left: 20px;
+    min-width: 100px;
+}
+
+.task-section-label {
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: white;
+}
+
+/* Кольори секції для правого блоку */
+.task-section-label[data-section="drivers"] { background-color: #28a745; }
+.task-section-label[data-section="blockers"] { background-color: #dc3545; }
+.task-section-label[data-section="accelerators"] { background-color: #ffc107; }
+
+.task-order {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.task-complete-btn {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.task-complete-btn:hover {
+    background-color: #0056b3;
+}

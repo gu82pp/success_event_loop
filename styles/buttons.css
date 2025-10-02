@@ -1,0 +1,29 @@
+.realistic-button {
+    /* Базовий стиль */
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #007bff; /* Колір кнопки (аналог primary) */
+    color: white;
+    transition: all 0.05s ease; /* Плавний перехід для ефектів */
+
+    /* Ефект глибини (3D) */
+    box-shadow: 0 4px 0 0 #0056b3; /* Нижня (темна) тінь для "глибини" */
+    transform: translateY(0);
+}
+
+/* Стан при наведенні мишки */
+.realistic-button:hover {
+    background-color: #0056b3;
+}
+
+/* Стан при активному натисканні (клас :active) */
+.realistic-button:active {
+    /* Зміщення кнопки вниз, імітуючи натискання */
+    transform: translateY(4px); 
+    
+    /* Прибираємо тінь, щоб імітувати, що кнопка "втопилася" */
+    box-shadow: 0 0 0 0 #0056b3; 
+}
