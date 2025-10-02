@@ -4,7 +4,7 @@
 const TASK_SCHEMA = {
     uuid: "string",
     section: "blockers", // blockers, drivers, accelerators
-    tableUuid: "uuid_string", // ід таблиці
+    categoryUuid: "uuid_string", // ід категорії
     title: "string", // назва задачі
     description: "string", // опис задачі
     benefit: "string", // користь від виконання задачі
@@ -14,6 +14,7 @@ const TASK_SCHEMA = {
     lastCompletedAt: "unix_timestamp|null", // час останнього виконання задачі
     completionCount: 0, // скільки разів я виконав цю задачу
     isArchived: false, // чи архівна це задача
+    lastUpdatedAt: "unix_timestamp|null", // час останнього оновлення задачі
 };
 
 // TODO: категорії задач

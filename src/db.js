@@ -126,8 +126,6 @@ async function initializeDB() {
     }
 }
 
-window.DB.PROMISE = initializeDB();
-
 
 /**
  * Додає новий допис до сховища об'єктів IndexedDB.
@@ -138,7 +136,7 @@ window.DB.PROMISE = initializeDB();
  * @returns {Promise<string>} - Проміс, який повертає uuid доданого допису.
  */
 async function addRecordToDB(storeName, record) {
-    console.log("Додавання допису до DB: ", db, storeName, record);
+    console.log("Додавання допису до DB: ", window.DB.INSTANCE, storeName, record);
 
     // ФІКСАЦІЯ ЧАСУ ПОЧАТКУ
     const startTime = performance.now(); 
