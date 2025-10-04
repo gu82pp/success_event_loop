@@ -19,9 +19,11 @@ async function loadSavedTasks() {
 async function getTasks() {
     await loadSavedTasks();
     Task.all().forEach(task => {
-        console.log(task);
+        // console.log(task);
     });
     // Task.markAsCompleted("fd8773c2-ef00-4538-aa98-ebd15856ddf0");
+
+    Debugger.printTimings({fields: ['label', 'time (ms)']});
 }
 getTasks();
 
@@ -88,3 +90,74 @@ function showBlockersPage() {
     showPage("page-task-list");
     hidePage("page-new-task");
 }
+
+
+
+//////////
+
+const domStructure = {
+    tag: "div",
+    id: "root",
+    className: "main page container",
+    
+    id: "string",
+    tag: "div",
+    scope: "string",
+    data: {}, // any object
+    className: "string", // with spaces: "container main"
+
+    // Властивість 'children' одразу описує ієрархію
+    children: [
+        {
+            tag: "header",
+            children: [
+                { tag: "h1", textContent: "Заголовок сторінки" }
+            ]
+        },
+        {
+            tag: "main",
+            children: [
+                { tag: "div", className: "content-box", textContent: "content-box"  },
+                linkToGitHubRepo()
+            ]
+        }
+    ]
+};
+
+/*
+    static itemSchemaExample = {
+        id: "string",
+        tag: "div",
+        scope: "string",
+        data: {}, // any object
+        className: "string", // with spaces: "container main"
+        children: [] // array of objects
+    };
+*/
+
+function linkToGitHubRepo() {
+    return {
+        id: "inkToGitHubRepo",
+        tag: "a",
+        data: {
+            href: "https://gu82pp.github.io/success_event_loop"
+        },
+        scope: "links",
+        className: "link",
+        textContent: "Success Event Loop",
+        children: [] // array of objects
+    };
+
+    
+}
+
+// Приклад використання (оптимізований через DocumentFragment):
+function createOptimizedDOM(structure, targetNode) {
+    const fragment = document.createDocumentFragment();
+    const rootElement = World.buildWorld(structure);
+    fragment.appendChild(rootElement);
+    targetNode.appendChild(fragment);
+}
+
+// Викликаємо функцію, передаючи дерево та місце в DOM
+createOptimizedDOM(domStructure, document.body);

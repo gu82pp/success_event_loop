@@ -39,7 +39,7 @@ function openIndexedDB(dbName, version, upgradeCallback) {
             const endTime = performance.now();
             const duration = (endTime - startTime).toFixed(2); // Точність до 2 знаків
             
-            console.log(`✅ Підключення до IndexedDB успішно встановлено за ${duration} мс.`);
+            Debugger.logTime("✅ Підключення до IndexedDB успішно встановлено.", duration)
 
             // Успішно повернути об'єкт бази даних
             resolve(db);
@@ -118,12 +118,14 @@ async function initializeDB() {
         // 2. Збереження інстансу для подальшого використання!
         window.DB.INSTANCE = dbInstance;
         
-        console.log("З'єднання з базою даних встановлено і збережено. window.DB: ", window.DB);
+       // console.log("З'єднання з базою даних встановлено і збережено. window.DB: ", window.DB);
         
     } catch (error) {
         // ... обробка помилок
         console.error("Не вдалося ініціалізувати базу даних:", error);
     }
+
+  // Debugger.logTime("✅ Підключення до IndexedDB успішно встановлено.", duration)
 }
 
 
@@ -168,7 +170,7 @@ async function addRecordToDB(storeName, record) {
             const endTime = performance.now();
             const duration = (endTime - startTime).toFixed(2); // Точність до 2 знаків
 
-            console.log(`✅ Додавання допису до IndexedDB успішно завершено за ${duration} мс.`, addedKey);
+            Debugger.logTime("✅ ✅ Додавання допису до IndexedDB успішно завершено.", duration, addedKey)
 
             resolve(addedKey); 
         };
@@ -245,7 +247,7 @@ async function getRecordFromDB(storeName, key) {
             const endTime = performance.now();
             const duration = (endTime - startTime).toFixed(2); // Точність до 2 знаків
 
-            console.log(`✅ Читання допису з IndexedDB успішно завершено за ${duration} мс.`, result);
+            Debugger.logTime("✅ ✅ Читання допису з IndexedDB успішно завершено.", duration, result);
             resolve(event.target.result); 
         };
         
@@ -497,7 +499,7 @@ async function getAllRecordsWithFilter(storeName, filters = {}) {
             } else {
                 const endTime = performance.now();
                 const duration = (endTime - startTime).toFixed(2);
-                console.log(`✅ Отримання всіх дописів з сховища '${storeName}' успішно завершено за ${duration} мс.`);
+                Debugger.logTime(`✅ Отримання всіх дописів з сховища '${storeName}' успішно завершено.`, duration, results);
                 // Курсор досяг кінця сховища
                 resolve(results); 
             }
