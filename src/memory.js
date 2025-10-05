@@ -6,8 +6,7 @@
 function getJSMemoryUsage() {
     if (window.performance && window.performance.memory) {
         const memory = window.performance.memory;
-        console.log('Memory info:', window.performance);
-        
+
         return {
             totalJSHeapSize: (memory.totalJSHeapSize / 1024 / 1024).toFixed(2), // Загальний об'єм купи, МБ
             usedJSHeapSize: (memory.usedJSHeapSize / 1024 / 1024).toFixed(2),   // Використаний об'єм купи, МБ
@@ -17,10 +16,14 @@ function getJSMemoryUsage() {
     return null;
 }
 
-setTimeout(() => {
-    const memoryStats = getJSMemoryUsage();
-    if (memoryStats) {
-        console.log(`Використано пам'яті JS: ${memoryStats.usedJSHeapSize} МБ`);
-        // ... логіка перевірки та очищення ...
+const memory_stats = document.getElementById('memory_stats');
+showStats();
+setInterval(() => {
+    showStats();
+}, 1000);
+
+function showStats() {
+    if (memory_stats) {
+        memory_stats.textContent = `Використано пам'яті JS: ${getJSMemoryUsage().usedJSHeapSize} МБ`;
     }
-}, 500);
+}

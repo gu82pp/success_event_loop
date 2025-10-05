@@ -14,6 +14,6 @@ class Debugger
 
     static printTimings(params = {}) {
         if (!this.ENABLED) return;
-        console.table(this.Timimgs, params.fields);
+        // console.table(this.Timimgs, params.fields);
     }
 }

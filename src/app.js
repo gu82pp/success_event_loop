@@ -98,66 +98,106 @@ function showBlockersPage() {
 const domStructure = {
     tag: "div",
     id: "root",
-    className: "main page container",
+    className: "main",
     
-    id: "string",
-    tag: "div",
     scope: "string",
     data: {}, // any object
     className: "string", // with spaces: "container main"
 
     // Властивість 'children' одразу описує ієрархію
     children: [
-        {
-            tag: "header",
-            children: [
-                { tag: "h1", textContent: "Заголовок сторінки" }
-            ]
-        },
-        {
-            tag: "main",
-            children: [
-                { tag: "div", className: "content-box", textContent: "content-box"  },
-                linkToGitHubRepo()
-            ]
-        }
+        TaskListPage.root,
+        NewTaskPage.root,
+        EditTaskPage.root
     ]
 };
 
-/*
-    static itemSchemaExample = {
-        id: "string",
-        tag: "div",
-        scope: "string",
-        data: {}, // any object
-        className: "string", // with spaces: "container main"
-        children: [] // array of objects
-    };
-*/
+console.log("domStructure", domStructure)
 
-function linkToGitHubRepo() {
-    return {
-        id: "inkToGitHubRepo",
-        tag: "a",
-        data: {
-            href: "https://gu82pp.github.io/success_event_loop"
-        },
-        scope: "links",
-        className: "link",
-        textContent: "Success Event Loop",
-        children: [] // array of objects
-    };
-
-    
-}
 
 // Приклад використання (оптимізований через DocumentFragment):
 function createOptimizedDOM(structure, targetNode) {
     const fragment = document.createDocumentFragment();
     const rootElement = World.buildWorld(structure);
+
     fragment.appendChild(rootElement);
     targetNode.appendChild(fragment);
 }
 
 // Викликаємо функцію, передаючи дерево та місце в DOM
+
 createOptimizedDOM(domStructure, document.body);
+
+
+
+// new NewTaskPage("new_task_page").addChildren([
+//     new NewTaskForm("new_task_form"),
+//     new Button("new_task_button", "Завантажити завдання")
+// ])
+
+function updateInnerText() {
+
+    let taskPageInner = World.getElement("task_list_page_inner");
+    let editTaskPageInner = World.getElement("edit_task_page_inner");
+
+
+    taskPageInner.textContent = "New Task list page";
+    editTaskPageInner.textContent = "New edit task page";
+
+    switchAnimation(taskPageInner, ["orange"], ["white"], 100, ["white"], ["orange"]);
+    switchAnimation(taskPageInner, ["wiggle"], [], 500, [], ["wiggle"]);
+    
+    switchAnimation(editTaskPageInner, ["orange"], ["white"], 100, ["white"], ["orange"]);
+    switchAnimation(editTaskPageInner, ["wiggle"], [], 500, [], ["wiggle"]);
+    
+}
+
+/**
+ * 
+ * @param {*} e - element
+ * @param {*} a1 - array of classes to add
+ * @param {*} a2 - array of classes to remove
+ * @param {*} d - delay
+ * @param {*} b1 - array of classes to add
+ * @param {*} b2 - array of classes to remove
+ */
+function switchAnimation(e, a1, a2, d, b1, b2) {
+    if(!e) return;
+    if(!classesArrayIsValid(a1)) return;
+    if(!classesArrayIsValid(a2)) return;
+    if(!classesArrayIsValid(b1)) return;
+    if(!classesArrayIsValid(b2)) return;
+    for (let i = 0; i < a1.length; i++) { e.classList.add(a1[i]); }
+    for (let i = 0; i < a2.length; i++) { e.classList.remove(a2[i]); }
+    setTimeout(() => {
+        for (let i = 0; i < b1.length; i++) { e.classList.add(b1[i]); }
+        for (let i = 0; i < b2.length; i++) { e.classList.remove(b2[i]); }
+    }, d);
+}
+
+function classesArrayIsValid(stringArray) {
+  if (!Array.isArray(stringArray)) {
+    console.error("Помилка: Вхідний аргумент повинен бути масивом.");
+    return false; // Зупиняємо, якщо вхідний аргумент не масив
+  }
+
+  for (let i = 0; i < stringArray.length; i++) {
+    const inputString = stringArray[i];
+
+    if (typeof inputString !== 'string') {
+      console.error(`Помилка: Елемент масиву з індексом ${i} не є рядком.`);
+      return false; // Зупиняємо, якщо елемент масиву не є рядком
+    }
+
+    if (inputString.includes(" ")) {
+      console.error(`Рядок "${inputString}" з індексом ${i} містить пробіл! Проблема з класом або ідентифікатором.`);
+      return false; // Повертаємо false, якщо знайдено пробіл
+    }
+  }
+  return true; // Повертаємо true, якщо все гаразд
+}
+
+
+new NewTaskPage("new_1").addChildren([
+
+])

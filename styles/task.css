@@ -156,3 +156,30 @@
 .task-complete-btn:hover {
     background-color: #0056b3;
 }
+
+
+
+.orange {
+    background-color: rgba(255, 224, 178, 1); /* Світло-апельсиновий */
+    transition: background-color 0.1s ease-in-out; /* Плавний перехід */
+
+
+}
+
+.white {
+    background-color: rgba(255, 255, 255, 1); /* Білий */
+    transition: background-color 1s ease-in-out; /* Повільне зникнення */
+}
+
+
+.wiggle {
+  display: inline-block;
+  perspective: 800px; /* Додаємо перспективу */
+  animation: wigglePerspective 0.5s linear infinite;
+}
+
+@keyframes wigglePerspective {
+  0% { transform: rotateY(7deg); }
+  50% { transform: rotateY(-7deg); }
+  10% { transform: rotateY(0deg); }
+}

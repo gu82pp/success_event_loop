@@ -36,5 +36,5 @@ window.DB = {
     }
 };
 
-console.log("window.CONFIG: ", window.CONFIG );
+// console.log("window.CONFIG: ", window.CONFIG );
 

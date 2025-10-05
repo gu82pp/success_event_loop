@@ -4,47 +4,77 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="MT4EGV9491BI-PrRQRtM-1" value="indexedDB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-1" value="indexedDB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="460" y="230" width="160" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-2" value="DOM" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-2" value="DOM" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="1130" y="240" width="210" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-3" value="MEMORY" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-3" value="MEMORY" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="740" y="177" width="200" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="MT4EGV9491BI-PrRQRtM-4" target="MT4EGV9491BI-PrRQRtM-3">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="MT4EGV9491BI-PrRQRtM-4" target="MT4EGV9491BI-PrRQRtM-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-4" value="APP" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-4" value="APP" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
           <mxGeometry x="800" y="444" width="330" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-11" value="CRUD&lt;div&gt;flat schema with versions&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-11" value="CRUD&lt;div&gt;flat schema with versions&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="775" y="130" width="180" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-12" value="backup data between session&lt;div&gt;flat schema with versions&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-12" value="backup data between session&lt;div&gt;flat schema with versions&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="460" y="385" width="219" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.429;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="MT4EGV9491BI-PrRQRtM-1" target="MT4EGV9491BI-PrRQRtM-3">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.429;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="MT4EGV9491BI-PrRQRtM-1" target="MT4EGV9491BI-PrRQRtM-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=60;entryPerimeter=0;" edge="1" parent="1" source="MT4EGV9491BI-PrRQRtM-3" target="MT4EGV9491BI-PrRQRtM-2">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=60;entryPerimeter=0;" parent="1" source="MT4EGV9491BI-PrRQRtM-3" target="MT4EGV9491BI-PrRQRtM-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=115;entryDy=140;entryPerimeter=0;" edge="1" parent="1" source="MT4EGV9491BI-PrRQRtM-4" target="MT4EGV9491BI-PrRQRtM-2">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=115;entryDy=140;entryPerimeter=0;" parent="1" source="MT4EGV9491BI-PrRQRtM-4" target="MT4EGV9491BI-PrRQRtM-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-17" value="templates with scope" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-17" value="templates with scope" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1158" y="205" width="180" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-18" value="Debugger" style="shape=tape;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-18" value="Debugger" style="shape=tape;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="78" y="44" width="239" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-19" value="Error aggregator&lt;div&gt;Call stack&lt;/div&gt;&lt;div&gt;Save to file, .csv&lt;/div&gt;&lt;div&gt;perfomance check&lt;/div&gt;&lt;div&gt;memory leak&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-19" value="Error aggregator&lt;div&gt;Call stack&lt;/div&gt;&lt;div&gt;Save to file, .csv&lt;/div&gt;&lt;div&gt;perfomance check&lt;/div&gt;&lt;div&gt;memory leak&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="92" y="144" width="180" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="MT4EGV9491BI-PrRQRtM-21" value="custom functions" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="MT4EGV9491BI-PrRQRtM-21" value="custom functions" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="820" y="603" width="274" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="V3dxcGj74AWTt2-kH0hv-1" target="V3dxcGj74AWTt2-kH0hv-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-1" value="&lt;b&gt;World.js&lt;/b&gt;&lt;div&gt;Обробник схеми, який створює всі елементи і завантажує їх у память.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;spacingLeft=10;spacingRight=10;spacingTop=10;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="216" y="817" width="222" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="V3dxcGj74AWTt2-kH0hv-2" target="V3dxcGj74AWTt2-kH0hv-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-2" value="&lt;b&gt;Loader.js&lt;/b&gt;&lt;div&gt;Завантажувач, який визначає порядок завантаження скриптів і стилів.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;spacingLeft=10;spacingRight=10;spacingTop=10;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="75" y="505" width="194" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="V3dxcGj74AWTt2-kH0hv-3" target="V3dxcGj74AWTt2-kH0hv-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-3" value="&lt;b&gt;DOM-schema.js&lt;/b&gt;&lt;div&gt;Тут описується схема всіх елементів, що будуть присутні на цій конкретній сторінці. Повертає дерево обєктів&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;spacingLeft=10;spacingRight=10;spacingTop=10;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="125" y="654" width="222" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="V3dxcGj74AWTt2-kH0hv-7" target="V3dxcGj74AWTt2-kH0hv-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-7" value="&lt;b&gt;App-{name}.js&lt;/b&gt;&lt;div&gt;Тут функції. Починаємо з генерації мінімально необхідних елементів для відображення і застосовуємо в DOM.&amp;nbsp;&lt;/div&gt;&lt;div&gt;Далі генеруємо решту, щоб було готово.&lt;/div&gt;&lt;div&gt;На 1 етапі показуємо заглушки видів.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;spacingLeft=10;spacingRight=10;spacingTop=10;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="386" y="947" width="246" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-10" value="&lt;b&gt;DB.js&lt;/b&gt;&lt;div&gt;Бібліотека для роботи з базою. Читаємо з памяті існуючі дані.&lt;/div&gt;&lt;div&gt;Заповнюємо DOM цими даними.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;spacingLeft=10;spacingRight=10;spacingTop=10;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="730.5" y="895" width="269" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="V3dxcGj74AWTt2-kH0hv-11" value="&lt;b&gt;API.js&lt;/b&gt;&lt;div&gt;Звертаємось до сервера по оновлені дані, та замінюємо їх в базі та DOM елементах.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;spacingLeft=10;spacingRight=10;spacingTop=10;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="1243" y="884" width="269" height="123" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
