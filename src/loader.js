@@ -19,6 +19,7 @@ class QueueLoader {
             const script = document.createElement('script');
             script.src = url;
             script.type = 'text/javascript';
+            script.defer = true; 
 
             script.onload = () => {
                 // 2. Кінець вимірювання часу та логування
