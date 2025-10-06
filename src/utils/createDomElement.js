@@ -50,10 +50,10 @@ function createDomElement(tagName, options) {
     // 3. ФОРМУВАННЯ ТА ВСТАНОВЛЕННЯ ID
     let finalId;
     if (id && typeof id === 'string') {
-        finalId = `${scope}_${id}`;
+        finalId = `${tagName}_${scope}_${id}`;
     } else {
         const randomPart = generateSafeID();
-        finalId = `${scope}_${randomPart}`;
+        finalId = `${tagName}_${scope}_${randomPart}`;
     }
     element.id = finalId;
 
@@ -92,7 +92,17 @@ function createDomElement(tagName, options) {
         });
     }
 
+    rememberElement(element);
+
     return element;
+}
+
+function rememberElement(element) {
+    if (!element) return;
+    World.Items[element.id] = {
+        element: element,
+        scope: element.scope,
+    }
 }
 
 // ====================================================================

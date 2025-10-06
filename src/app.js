@@ -45,134 +45,129 @@ function createTask(task) {
     return createdTask;
 }
 
-// let firstTask = {  
-//     section: "blockers", // blockers, drivers, accelerators
-//     categoryUuid: crypto.randomUUID(), // ід категорії
-//     title: "Моє друге завдання", // назва задачі
-//     description: "Опис мого другого завдання", // опис задачі
-//     benefit: "Я відчуваю що зараз буде прогрес!", // користь від виконання задачі
-//     repeatInterval: 12, // час через який слід повторити виконання цієї задачі, у годинах
-//     minCompletionTime: 0, // найменший час, за який мені вдалось виконати задачу, у хвилинах
-//     estimatedTime: 5, // час, якого на мою думку достатньо, щоб виконати задачу, у хвилинах
-// };
-
-// createTask(firstTask);
 
 
 
-function showPage(pageName) {
-    const page = Div.getElement(pageName);
-    if (page) {
-        // add class .d-block and remove .d-none
-        page.classList.add('d-block');
-        page.classList.remove('d-none');
-    }
-}
+function render() {
+    const page = document.getElementById("page");
+    const layout = buildHeaderCountentFooterOuter();
+    const header = buildHeaderDOM()
+    const content = buildContentDOM()
+    const footer = buildFooterDOM() // це можна і відкласти на пізніше
 
-
-function hidePage(pageName) {
-    const page = Div.getElement(pageName);
-    if (page) {
-        // add class .d-block and remove .d-none
-        page.classList.add('d-none');
-        page.classList.remove('d-block');
-    }
-}
-
-function showAddTaskPage() {
-    // Div.getElement("uuid")
-    showPage("page-new-task");
-    hidePage("page-task-list");
-    Div.getElement("uuid").textContent = crypto.randomUUID();
-}
-
-function showBlockersPage() {
-    showPage("page-task-list");
-    hidePage("page-new-task");
-}
-
-
-
-//////////
-
-const domStructure = {
-    tag: "div",
-    id: "root",
-    className: "main",
-    
-    scope: "string",
-    data: {}, // any object
-    className: "string", // with spaces: "container main"
-
-    // Властивість 'children' одразу описує ієрархію
-    children: [
-        TaskListPage.root,
-        NewTaskPage.root,
-        EditTaskPage.root
-    ]
-};
-
-console.log("domStructure", domStructure)
-
-
-// Приклад використання (оптимізований через DocumentFragment):
-function createOptimizedDOM(structure, targetNode) {
+    // Створення нового фрагменту
     const fragment = document.createDocumentFragment();
-    const rootElement = World.buildWorld(structure);
 
-    fragment.appendChild(rootElement);
-    targetNode.appendChild(fragment);
+    // Додавання елементів до фрагменту
+    fragment.appendChild(header);
+    fragment.appendChild(content);
+    fragment.appendChild(footer);
+
+    layout.appendChild(fragment);
+
+    // Вставка фрагменту в DOM
+    page.appendChild(layout);
+    return false;
 }
+render()
+console.log("remembered", World.Items)
 
-// Викликаємо функцію, передаючи дерево та місце в DOM
+function buildHeaderCountentFooterOuter() {
+    // 1. Створення DocumentFragment (легкий контейнер у пам'яті)
+    const fragment = document.createDocumentFragment();
 
-createOptimizedDOM(domStructure, document.body);
+    // Загальні параметри для всіх колонок
+    const baseOptions = { scope: 'layout-column', class: 'col' };
 
-
-
-
-function registerEvents() {
-    World.addEventById("new_task_page_inner", "click", updateInnerText)
-    World.addEventById("new_task_page_inner", "click", updateInnerText2)
-}
-registerEvents()
-
-function updateInnerText() {
-    let taskPageInner = World.getElement("task_list_page_inner");
-    let editTaskPageInner = World.getElement("edit_task_page_inner");
-
-    switchAnimation(taskPageInner, ["orange"], ["white"], 100, ["white"], ["orange"]);
-    switchAnimation(taskPageInner, ["wiggle"], [], 500, [], ["wiggle"]);
+    // 2. Створення елементів за допомогою універсальної функції
     
-    switchAnimation(editTaskPageInner, ["orange"], ["white"], 100, ["white"], ["orange"]);
-    switchAnimation(editTaskPageInner, ["wiggle"], [], 500, [], ["wiggle"]);
+    // Створення <div id="header"></div>
+    const headerDiv = createDomElement('div', {
+        ...baseOptions,
+        id: 'header'
+    });
+
+    // Створення <div id="content"></div>
+    const contentDiv = createDomElement('div', {
+        ...baseOptions,
+        id: 'content'
+    });
+
+    // Створення <div id="footer"></div>
+    const footerDiv = createDomElement('div', {
+        ...baseOptions,
+        id: 'footer'
+    });
+
+    // 3. Додавання елементів до фрагмента (все ще в пам'яті)
+    fragment.appendChild(headerDiv);
+    fragment.appendChild(contentDiv);
+    fragment.appendChild(footerDiv);
+
+    // 4. Повернення фрагмента
+    return fragment;
 }
 
-function updateInnerText2() {
-    let taskPageInner = World.getElement("task_list_page_inner");
-    let editTaskPageInner = World.getElement("edit_task_page_inner");
 
-    taskPageInner.textContent = "New Task list page";
-    editTaskPageInner.textContent = "New edit task page";
+function buildHeaderDOM() {
+
+    // Створення нового фрагменту
+    const fragment = document.createDocumentFragment();
+
+    // 1. Створення внутрішнього елемента <a> (Посилання)
+    const linkElement = createDomElement('a', {
+        scope: 'app-link', // Обов'язковий scope
+        textContent: 'Success Event Loop',
+        href: 'https://gu82pp.github.io/success_event_loop/', // Специфічний атрибут для <a>
+    });
+
+    // 2. Створення зовнішнього елемента <h1>
+    const headerElement = createDomElement('h1', {
+        scope: 'app-header', // Обов'язковий scope
+        class: ['mb-4', 'text-center'], // Класи Bootstrap для стилізації
+    });
+
+    // 3. Вкладення елементів: <h1> вкладає <a>
+    headerElement.appendChild(linkElement);
+
+    fragment.appendChild(headerElement);
+    fragment.appendChild(buildHeaderButtonOuter());
+
+    return fragment;
+}
+
+function buildHeaderButtonOuter() {
+
+    // 1. Створення внутрішнього елемента (Контейнер для кнопок)
+    const innerDiv = createDomElement('div', {
+        scope: 'ui-component', // Обов'язковий scope
+        id: 'buttons-container', // Фіксований ID для подальшого використання
+        class: ['col', 'd-flex', 'justify-content-start'], // Класи Bootstrap для вирівнювання
+    });
+
+    // 2. Створення зовнішнього елемента (Контейнер з відступом)
+    const outerDiv = createDomElement('div', {
+        scope: 'layout', // Обов'язковий scope
+        class: 'mb-5', // Клас Bootstrap для великого нижнього відступу
+    });
+
+    // 3. Вкладення елементів: Зовнішній <div> вкладає Внутрішній <div>
+    outerDiv.appendChild(innerDiv);
+
+    return outerDiv;
 }
 
 
-
-/**
- * Тут описую основні компоненти сторінки і вкладаю їх один в одного
- * Мені не потрібні додаткові класи, бо вбудованих достатньо!
- */
-class Layout 
-{
-    header = new NewTaskPage("new_1");
-    content = new NewTaskPage("new_2");
-    footer = new NewTaskPage("new_3");
-
-    constructor() 
-    {
-        this.header.element.appendChild(this.content.element);
-    }
+function buildContentDOM() {
+    // TODO: створити компонент з базовим шаблоном
+    // Створення нового фрагменту
+    const fragment = document.createDocumentFragment();
+    return fragment;
 }
 
-const layout = new Layout();
-console.log("layout", layout)
+function buildFooterDOM() {
+    // TODO: створити компонент з базовим шаблоном
+        // Створення нового фрагменту
+    const fragment = document.createDocumentFragment();
+    return fragment;
+}
