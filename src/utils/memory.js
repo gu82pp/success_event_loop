@@ -16,14 +16,14 @@ function getJSMemoryUsage() {
     return null;
 }
 
-const memory_stats = document.getElementById('memory_stats');
-showStats();
-setInterval(() => {
-    showStats();
-}, 1000);
+// const memory_stats = document.getElementById('memory_stats');
+// showStats();
+// setInterval(() => {
+//     showStats();
+// }, 1000);
 
-function showStats() {
-    if (memory_stats) {
-        memory_stats.textContent = `Використано пам'яті JS: ${getJSMemoryUsage().usedJSHeapSize} МБ`;
-    }
-}
+// function showStats() {
+//     if (memory_stats) {
+//         memory_stats.textContent = `Використано пам'яті JS: ${getJSMemoryUsage().usedJSHeapSize} МБ`;
+//     }
+// }

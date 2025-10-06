@@ -1,3 +1,44 @@
+/* --- Початок файлу: ./Uuid.js --- */
+/**
+ * Генерує унікальний ID, використовуючи найкращий доступний метод:
+ * 1. Спробує crypto.randomUUID() (довгий, криптографічно безпечний).
+ * 2. Якщо недоступний, використовує Math.random() + toString(36) (короткий, швидкий).
+ * * @param {boolean} [preferShort=false] - Якщо true, завжди повертає короткий ID, якщо доступний.
+ * @returns {string} Унікальний або псевдоунікальний ID.
+ */
+function generateSafeID(preferShort = false) {
+    // 1. Внутрішня функція для генерації короткого, псевдоунікального ID
+    const generateShortID = () => {
+        // Комбінація мітки часу та випадкового числа для кращої унікальності
+        const timePart = Date.now().toString(36); 
+        const randomPart = Math.random().toString(36).slice(2, 6);
+        return `${timePart}-${randomPart}`;
+    };
+
+    if (preferShort) {
+        // Якщо ми свідомо хочемо короткий ID АБО crypto недоступний
+        return generateShortID();
+    }
+
+    // 2. Перевірка наявності нативного API
+    const isCryptoAvailable = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function';
+
+    if (preferShort || !isCryptoAvailable) {
+        // Якщо ми свідомо хочемо короткий ID АБО crypto недоступний
+        return generateShortID();
+    }
+    
+    // 3. Використання найшвидшого нативного методу (якщо доступний і не вимагається короткий ID)
+    if (isCryptoAvailable) {
+        return crypto.randomUUID();
+    }
+
+    // Це має бути недосяжно, але як остання ланка безпеки
+    return generateShortID(); 
+}
+
+
+/* --- Початок файлу: ./createDomElement.js --- */
 /**
  * Універсальна функція для створення будь-якого DOM-елемента з базовими і розширеними атрибутами.
  * * МОЖЛИВІ ТЕГИ: div, span, p, h1-h6, section, article, li, ul, ol, button, 
@@ -158,3 +199,103 @@ function checkId(id) {
 // document.body.appendChild(imageElement);
 
 // console.log("Універсальні елементи додані до DOM.");
+
+/* --- Початок файлу: ./debugger.js --- */
+class Debugger
+{
+    static ENABLED = true;
+    static MAX_TIMING_ENTRIES = 100; // Максимальна кількість записів часу виконання
+    static Timimgs = []
+
+    static logTime(label, executionTime, context = {}) {
+        if (!this.ENABLED) return;
+        this.Timimgs.push({ label, "time (ms)": executionTime, ...context });
+        if (this.Timimgs.length > this.MAX_TIMING_ENTRIES) {
+            this.Timimgs.shift(); // Видаляємо найстаріший запис
+        }
+    }
+
+    static printTimings(params = {}) {
+        if (!this.ENABLED) return;
+        // console.table(this.Timimgs, params.fields);
+    }
+}
+
+
+/* --- Початок файлу: ./memory.js --- */
+/**
+ * Повертає звіт про пам'ять, яку використовує JavaScript-рушій.
+ * Примітка: Доступно лише у Chrome/Vivaldi/Edge.
+ * @returns {object} Об'єкт з інформацією про пам'ять.
+ */
+function getJSMemoryUsage() {
+    if (window.performance && window.performance.memory) {
+        const memory = window.performance.memory;
+
+        return {
+            totalJSHeapSize: (memory.totalJSHeapSize / 1024 / 1024).toFixed(2), // Загальний об'єм купи, МБ
+            usedJSHeapSize: (memory.usedJSHeapSize / 1024 / 1024).toFixed(2),   // Використаний об'єм купи, МБ
+            jsHeapLimit: (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)      // Ліміт, МБ
+        };
+    }
+    return null;
+}
+
+// const memory_stats = document.getElementById('memory_stats');
+// showStats();
+// setInterval(() => {
+//     showStats();
+// }, 1000);
+
+// function showStats() {
+//     if (memory_stats) {
+//         memory_stats.textContent = `Використано пам'яті JS: ${getJSMemoryUsage().usedJSHeapSize} МБ`;
+//     }
+// }
+
+/* --- Початок файлу: ./switchAnimation.js --- */
+/**
+ * 
+ * @param {*} e - element
+ * @param {*} a1 - array of classes to add
+ * @param {*} a2 - array of classes to remove
+ * @param {*} d - delay
+ * @param {*} b1 - array of classes to add
+ * @param {*} b2 - array of classes to remove
+ */
+function switchAnimation(e, a1, a2, d, b1, b2) {
+    if(!e) return;
+    if(!classesArrayIsValid(a1)) return;
+    if(!classesArrayIsValid(a2)) return;
+    if(!classesArrayIsValid(b1)) return;
+    if(!classesArrayIsValid(b2)) return;
+    for (let i = 0; i < a1.length; i++) { e.classList.add(a1[i]); }
+    for (let i = 0; i < a2.length; i++) { e.classList.remove(a2[i]); }
+    setTimeout(() => {
+        for (let i = 0; i < b1.length; i++) { e.classList.add(b1[i]); }
+        for (let i = 0; i < b2.length; i++) { e.classList.remove(b2[i]); }
+    }, d);
+}
+
+function classesArrayIsValid(stringArray) {
+  if (!Array.isArray(stringArray)) {
+    console.error("Помилка: Вхідний аргумент повинен бути масивом.");
+    return false; // Зупиняємо, якщо вхідний аргумент не масив
+  }
+
+  for (let i = 0; i < stringArray.length; i++) {
+    const inputString = stringArray[i];
+
+    if (typeof inputString !== 'string') {
+      console.error(`Помилка: Елемент масиву з індексом ${i} не є рядком.`);
+      return false; // Зупиняємо, якщо елемент масиву не є рядком
+    }
+
+    if (inputString.includes(" ")) {
+      console.error(`Рядок "${inputString}" з індексом ${i} містить пробіл! Проблема з класом або ідентифікатором.`);
+      return false; // Повертаємо false, якщо знайдено пробіл
+    }
+  }
+  return true; // Повертаємо true, якщо все гаразд
+}
+
