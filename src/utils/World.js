@@ -27,7 +27,6 @@ class World
     static itemSchemaExample = {
         id: "string",
         tag: "div",
-        data: {}, // any object
         scope: "string",
         className: "string", // with spaces: "container main"
         textContent: "textContent",
@@ -70,12 +69,9 @@ class World
             }
         }
 
-
-
         this.Items[element.id] = {
             element: element,
             scope: itemSchema.scope,
-            data: itemSchema.data
         }
 
         return element;
@@ -119,5 +115,30 @@ class World
     static getElement(uuid) {
         // console.log("this.Items", this.Items)
         return this.Items[uuid].element;
+    }
+
+    static addEventById(uuid, eventName, callback) {
+        const element = World.getElement(uuid);
+        if (!element) {
+            console.error(`Error while registering event '${eventName}' for element '${uuid}'. Element not found.`);
+            return;
+        }
+    
+        element.addEventListener(eventName, callback);
+    }
+
+
+    static addEventToElement(element, eventName, callback) {
+        if (!element) {
+            console.error(`Error while registering event '${eventName}' for element. Element not found.`, element);
+            return;
+        }
+        element.addEventListener(eventName, callback);
+    }
+
+    constructor(scope = "") {
+        this.scope = scope;
+
+        // todo: decoration:
     }
 }

@@ -130,74 +130,49 @@ createOptimizedDOM(domStructure, document.body);
 
 
 
-// new NewTaskPage("new_task_page").addChildren([
-//     new NewTaskForm("new_task_form"),
-//     new Button("new_task_button", "Завантажити завдання")
-// ])
+
+function registerEvents() {
+    World.addEventById("new_task_page_inner", "click", updateInnerText)
+    World.addEventById("new_task_page_inner", "click", updateInnerText2)
+}
+registerEvents()
 
 function updateInnerText() {
-
     let taskPageInner = World.getElement("task_list_page_inner");
     let editTaskPageInner = World.getElement("edit_task_page_inner");
-
-
-    taskPageInner.textContent = "New Task list page";
-    editTaskPageInner.textContent = "New edit task page";
 
     switchAnimation(taskPageInner, ["orange"], ["white"], 100, ["white"], ["orange"]);
     switchAnimation(taskPageInner, ["wiggle"], [], 500, [], ["wiggle"]);
     
     switchAnimation(editTaskPageInner, ["orange"], ["white"], 100, ["white"], ["orange"]);
     switchAnimation(editTaskPageInner, ["wiggle"], [], 500, [], ["wiggle"]);
-    
 }
+
+function updateInnerText2() {
+    let taskPageInner = World.getElement("task_list_page_inner");
+    let editTaskPageInner = World.getElement("edit_task_page_inner");
+
+    taskPageInner.textContent = "New Task list page";
+    editTaskPageInner.textContent = "New edit task page";
+}
+
+
 
 /**
- * 
- * @param {*} e - element
- * @param {*} a1 - array of classes to add
- * @param {*} a2 - array of classes to remove
- * @param {*} d - delay
- * @param {*} b1 - array of classes to add
- * @param {*} b2 - array of classes to remove
+ * Тут описую основні компоненти сторінки і вкладаю їх один в одного
+ * Мені не потрібні додаткові класи, бо вбудованих достатньо!
  */
-function switchAnimation(e, a1, a2, d, b1, b2) {
-    if(!e) return;
-    if(!classesArrayIsValid(a1)) return;
-    if(!classesArrayIsValid(a2)) return;
-    if(!classesArrayIsValid(b1)) return;
-    if(!classesArrayIsValid(b2)) return;
-    for (let i = 0; i < a1.length; i++) { e.classList.add(a1[i]); }
-    for (let i = 0; i < a2.length; i++) { e.classList.remove(a2[i]); }
-    setTimeout(() => {
-        for (let i = 0; i < b1.length; i++) { e.classList.add(b1[i]); }
-        for (let i = 0; i < b2.length; i++) { e.classList.remove(b2[i]); }
-    }, d);
+class Layout 
+{
+    header = new NewTaskPage("new_1");
+    content = new NewTaskPage("new_2");
+    footer = new NewTaskPage("new_3");
+
+    constructor() 
+    {
+        this.header.element.appendChild(this.content.element);
+    }
 }
 
-function classesArrayIsValid(stringArray) {
-  if (!Array.isArray(stringArray)) {
-    console.error("Помилка: Вхідний аргумент повинен бути масивом.");
-    return false; // Зупиняємо, якщо вхідний аргумент не масив
-  }
-
-  for (let i = 0; i < stringArray.length; i++) {
-    const inputString = stringArray[i];
-
-    if (typeof inputString !== 'string') {
-      console.error(`Помилка: Елемент масиву з індексом ${i} не є рядком.`);
-      return false; // Зупиняємо, якщо елемент масиву не є рядком
-    }
-
-    if (inputString.includes(" ")) {
-      console.error(`Рядок "${inputString}" з індексом ${i} містить пробіл! Проблема з класом або ідентифікатором.`);
-      return false; // Повертаємо false, якщо знайдено пробіл
-    }
-  }
-  return true; // Повертаємо true, якщо все гаразд
-}
-
-
-new NewTaskPage("new_1").addChildren([
-
-])
+const layout = new Layout();
+console.log("layout", layout)
