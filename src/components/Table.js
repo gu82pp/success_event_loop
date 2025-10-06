@@ -92,124 +92,178 @@ function formatTime(timestamp) {
         minute: '2-digit'
     });
 }
+
+
+
+
+/////////////////
+
 /**
- * Створює DOM-таблицю Bootstrap та повертає кореневий елемент 
- * і масив згенерованих елементів рядків.
- * * @param {Array<object>} tasks - Масив об'єктів завдань.
- * @returns {{root: HTMLElement, elements: Array<HTMLElement>}} Об'єкт з коренем DOM та масивом елементів.
+ * Створює основну структуру таблиці (<thead>, <tbody>) 
+ * використовуючи універсальну функцію createDomElement.
+ * * @param {Array<string>} headers - Масив назв колонок для заголовка.
+ * @returns {HTMLElement} Кореневий елемент <table>.
  */
-function TasksTable(tasks) {
-    // Масив для збору згенерованих елементів рядків (<tr>)
-    const generatedElements = [];
+function createTableStructure(headers) {
+    // Параметри для всіх елементів
+    const baseOptions = { scope: 'table-comp', class: 'table' };
 
-    if (!Array.isArray(tasks) || tasks.length === 0) {
-        const p = document.createElement('p');
-        p.textContent = "Немає завдань для відображення.";
-        p.classList.add('alert', 'alert-info', 'mt-3');
-        // Повертаємо, але коренем буде <p>, а elements — пустий масив
-        return { root: p, elements: [] }; 
-    }
+    // 1. Створення елемента <table>
+    const table = createDomElement('table', {
+        ...baseOptions, // Копіюємо базові параметри
+        class: ['table', 'table-hover', 'table-striped', 'mt-4'], // Додаємо класи Bootstrap
+        id: 'main-data-table'
+    });
 
-    // 1. Створення елементів таблиці
-    const table = document.createElement('table');
-    table.classList.add('table', 'table-hover', 'table-striped', 'table-bordered', 'mt-3');
-    
-    const thead = document.createElement('thead');
-    thead.classList.add('table-dark');
-    const headerRow = document.createElement('tr');
-    
-    // Заголовки, які ми відображаємо
-    const headers = {
-        title: 'Завдання',
-        section: 'Розділ',
-        estimatedTime: 'Час (хв)',
-        completionCount: 'Виконано',
-        lastCompletedAt: 'Останнє виконання',
-        isArchived: 'Архів'
-    };
-    
-    // Додавання колонок заголовка
-    Object.values(headers).forEach(text => {
-        const th = document.createElement('th');
-        th.textContent = text;
+    // 2. Створення елемента <thead>
+    const thead = createDomElement('thead', {
+        ...baseOptions,
+        class: 'table-dark'
+    });
+
+    // 3. Створення рядка заголовка <tr>
+    const headerRow = createDomElement('tr', baseOptions);
+
+    // 4. Створення колонок заголовка <th> (цикл)
+    headers.forEach((headerText, index) => {
+        const th = createDomElement('th', {
+            scope: 'header-col',
+            id: `col-${index}`,
+            textContent: headerText
+        });
         headerRow.appendChild(th);
     });
-    
+
+    // Вкладення заголовка: <thead> -> <tr> -> [<th>, <th>...]
     thead.appendChild(headerRow);
     table.appendChild(thead);
-    
-    // 2. Створення тіла таблиці та рядків
-    const tbody = document.createElement('tbody');
+
+    // 5. Створення елемента <tbody>
+    // Ми не додаємо нічого всередину tbody, він залишається порожнім для подальшого наповнення
+    const tbody = createDomElement('tbody', baseOptions);
+    table.appendChild(tbody);
+
+    return table;
+}
+
+// ====================================================================
+// ПРИКЛАД ВИКОРИСТАННЯ
+// ====================================================================
+
+// Визначення заголовків
+const tableHeaders = ['Завдання', 'Розділ', 'Час (хв)', 'Виконано'];
+
+// Створення всієї структури
+const myTable = createTableStructure(tableHeaders);
+
+// Додавання таблиці до DOM
+document.body.appendChild(myTable);
+
+console.log('Створено базову структуру таблиці з <thead> та порожнім <tbody>.');
+console.log(myTable.outerHTML);
+
+
+/**
+ * Додає рядки до тіла (<tbody>) існуючої таблиці.
+ * * @param {HTMLElement} tableElement - Кореневий елемент <table>, створений раніше.
+ * @param {Array<object>} tasks - Масив об'єктів завдань для відображення.
+ * @param {function} createDomElement - Ваша універсальна функція-будівельник DOM.
+ * @returns {Array<HTMLElement>} Масив згенерованих елементів рядків (<tr>).
+ */
+function addRowsToTable(tableElement, tasks, createDomElement) {
+    if (!tableElement || tableElement.tagName !== 'TABLE') {
+        console.error("Помилка: Необхідно передати валідний елемент <table>.");
+        return [];
+    }
+    if (!Array.isArray(tasks) || tasks.length === 0) {
+        console.warn("Попередження: Немає даних для додавання рядків.");
+        return [];
+    }
+
+    // Знаходимо <tbody>, щоб додати до нього рядки
+    const tbody = tableElement.querySelector('tbody');
+    if (!tbody) {
+        console.error("Помилка: Таблиця не містить елемента <tbody>.");
+        return [];
+    }
+
+    const generatedRows = [];
+    // Використовуємо DocumentFragment для пакетної вставки (ефективність!)
     const fragment = document.createDocumentFragment();
 
+    // Визначаємо ключі даних, які відповідають порядку в заголовку (як було раніше)
+    const dataKeys = ['title', 'section', 'estimatedTime', 'completionCount', 'lastCompletedAt', 'isArchived'];
+
     tasks.forEach(task => {
-        const row = document.createElement('tr');
-        row.dataset.uuid = task.uuid; // Додаємо UUID як data-атрибут для зручного пошуку
-        
+        // 1. Створення рядка <tr>
+        const row = createDomElement('tr', {
+            scope: 'task-row',
+            id: task.uuid,
+            // Додаємо data-атрибут для ідентифікації
+            // У чистій функції це потребує додаткової логіки, але ID достатньо
+        });
+
         // Стилізація рядків
         if (task.isArchived) {
             row.classList.add('table-secondary');
         } else if (task.section === 'blockers') {
-             row.classList.add('table-danger');
+            row.classList.add('table-danger');
         }
 
-        // Заповнення комірок
-        Object.keys(headers).forEach(key => {
-            const cell = document.createElement('td');
-            let cellValue = task[key];
-
-            switch (key) {
-                case 'section':
-                    cellValue = cellValue.charAt(0).toUpperCase() + cellValue.slice(1);
-                    break;
-                case 'lastCompletedAt':
-                    cellValue = formatTime(cellValue);
-                    break;
-                case 'isArchived':
-                    cellValue = task.isArchived ? '✅' : '—';
-                    break;
-                case 'title':
-                    cell.style.fontWeight = 'bold';
-                    break;
+        // 2. Створення комірок <td> (цикл)
+        dataKeys.forEach(key => {
+            let value = task[key];
+            
+            // Логіка форматування, як у попередньому прикладі
+            if (key === 'section') {
+                value = value.charAt(0).toUpperCase() + value.slice(1);
+            } else if (key === 'lastCompletedAt') {
+                value = formatTime(value); // Використовуємо функцію formatTime, визначену раніше
+            } else if (key === 'isArchived') {
+                value = value ? '✅' : '—';
             }
             
-            cell.textContent = cellValue;
+            // Створення комірки <td>
+            const cell = createDomElement('td', {
+                scope: `${task.uuid}_col`,
+                class: `col-${key}`,
+                textContent: value
+            });
+            
+            // Якщо комірка містить назву, зробимо її інтерактивною
+            if (key === 'title') {
+                cell.style.fontWeight = 'bold';
+                cell.style.cursor = 'pointer'; 
+                // Додаємо простий слухач подій
+                cell.addEventListener('click', () => {
+                    console.log(`Натиснуто завдання: ${task.title} (UUID: ${task.uuid})`);
+                    row.classList.toggle('table-info'); // Виділення рядка
+                });
+            }
+            
             row.appendChild(cell);
         });
-        
+
+        // Додаємо ряд до фрагмента та масиву результатів
         fragment.appendChild(row);
-        // ЗБІР ЗГЕНЕРОВАНИХ ЕЛЕМЕНТІВ
-        generatedElements.push(row); 
+        generatedRows.push(row);
     });
 
-    tbody.appendChild(fragment); 
-    table.appendChild(tbody);
+    // Фінальна дія: пакетна вставка в DOM (один Reflow/Repaint)
+    tbody.appendChild(fragment);
 
-    // 3. Повернення об'єкта
-    return {
-        root: table,
-        elements: generatedElements
-    };
+    return generatedRows;
 }
 
 // ====================================================================
-// ВИКЛИК ФУНКЦІЇ ТА ВИКОРИСТАННЯ
+// ПРИКЛАД ВИКОРИСТАННЯ
 // ====================================================================
 
-const tableComponent = TasksTable(fakeTasksData);
+document.body.appendChild(myTable);
 
-// a) Вставка в DOM через ключ 'root'
-document.body.appendChild(tableComponent.root);
-console.log(tableComponent.elements)
+// 2. Додаємо рядки, використовуючи функцію та фейкові дані
+const newRows = addRowsToTable(myTable, fakeTasksData, createDomElement);
 
-// b) Додавання слухача подій до всіх рядків через ключ 'elements'
-tableComponent.elements.forEach(row => {
-    // Додаємо слухача кліку, щоб, наприклад, відкрити деталі задачі
-    row.addEventListener('click', (event) => {
-        const uuid = event.currentTarget.dataset.uuid;
-        console.log(`Клік по завданню з UUID: ${uuid}`);
-        // Тут можна додати логіку для виділення рядка
-        event.currentTarget.classList.toggle('table-warning');
-    });
-});
-
+console.log(`Додано ${newRows.length} нових рядків до таблиці.`);
+// Тепер можна працювати з масивом нових рядків, наприклад:
+// newRows[0].style.backgroundColor = 'yellow';
