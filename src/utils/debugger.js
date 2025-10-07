@@ -35,3 +35,27 @@ function getJSMemoryUsage() {
     }
     return null;
 }
+
+window.onerror = function(message, source, lineno, colno, error) {
+  console.error("Глобальна помилка часу виконання перехоплена:", {message, source, lineno, colno, error});
+  // Запобігає виклику обробника браузера за замовчуванням
+  return true; 
+};
+
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('Неперехоплене відхилення промісу:', event.reason);
+  // Можна залогірувати, але *зазвичай* не запобігає "падінню" в суворих середовищах
+  // Втім, це дозволяє вам реагувати на них.
+});
+
+function ShowDOMRenderTime() {
+    // console.log("ShowDOMRenderTime");
+    // element.setAttribute('elementtiming', "main-title");
+    // https://developer.mozilla.org/en-US/docs/Web/API/PerformanceElementTiming
+    const observer = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+            console.log(entry);
+        });
+    });
+    observer.observe({ type: "element", buffered: true });
+}

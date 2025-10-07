@@ -36,7 +36,6 @@ function createDomElement(tagName, options) {
 
     // Деструктуризація для зручності
     const { 
-        scope, 
         id, 
         class: classNames, 
         textContent, 
@@ -47,9 +46,6 @@ function createDomElement(tagName, options) {
         type,
         data = {} // створюємо якщо не було передано об'єкт data
     } = safeOptions;
-
-    // 4. Приватний метод для збереження подій у об'єкті data
-    if(!data.events) data.events = [];
 
     // 3. ФОРМУВАННЯ ТА ВСТАНОВЛЕННЯ ID
     let finalId;
@@ -64,7 +60,7 @@ function createDomElement(tagName, options) {
         
     } else {
         const randomPart = generateSafeID();
-        finalId = `${tagName}_${scope}_${randomPart}`;
+        finalId = `${tagName}_${randomPart}`;
         //  console.log("final id", finalId , safeOptions)
     }
     element.id = finalId;
@@ -86,6 +82,10 @@ function createDomElement(tagName, options) {
     if (type !== undefined) element.setAttribute('type', type);
     if (href !== undefined) element.setAttribute('href', href);
     if (src !== undefined) element.setAttribute('src', src);
+    //  element.setAttribute('elementtiming', "main-title");
+
+
+
     if (value !== undefined) element.value = value; // Властивість value для форм
     
     // 6. ВСТАНОВЛЕННЯ ТЕКСТОВОГО ВМІСТУ
@@ -94,13 +94,13 @@ function createDomElement(tagName, options) {
     }
     
     // 7. ПРИКРІПЛЕННЯ СЛУХАЧІВ ПОДІЙ (ACTIONS)
+    const events = [];
     if (actions && typeof actions === 'object') {
         Object.entries(actions).forEach(([eventName, handler]) => {
             if (typeof handler === 'function') {
                 element.addEventListener(eventName, handler);
 
-                
-                data.events.push({
+                events.push({
                     eventName: eventName,
                     handler: handler
                 });
@@ -110,7 +110,7 @@ function createDomElement(tagName, options) {
         });
     }
 
-    World.addItem(element, scope, data)
+    World.addItem(element, data, events)
 
     return element;
 }

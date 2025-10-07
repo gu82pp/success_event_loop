@@ -114,10 +114,10 @@ function getBadgeCount(id) {
 
 function clickOnDriversButton() {
     const item = World.element("drivers");
-    item.remove()
-    setTimeout(() => {
-       
-    }, 1000)
+    // item.remove()
+    World.destroyItem('drivers');
+    console.log("_ items", _.items(), "_ eventsList", _.events());
+
     // return false
     const count = getBadgeCount('drivers-count');
     updateBadge('drivers-count', count + 1);

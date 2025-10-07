@@ -44,4 +44,6 @@ function render() {
     page.appendChild(pageFragment());
 }
 render()
-console.log("remembered", World.items())
+// ShowDOMRenderTime()
+console.log("_ items", _.items(), "_ eventsList", _.events());
+

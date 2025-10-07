@@ -19,7 +19,7 @@ function createSectionBlocks() {
     // Дані для блоків
     const blockData = [
         { title: 'Blockers', class: 'text-danger d-block' },
-        { title: 'Drivers', class: 'text-primary d-none' },
+        { title: 'Drivers', class: 'text-primary d-block', click: clickOnDriversBlock },
         { title: 'Accelerators', class: 'text-success d-none' }
     ];
 
@@ -28,11 +28,18 @@ function createSectionBlocks() {
 
     // 2. Створення та додавання елементів
     blockData.forEach(data => {
+
+        const actions = {};
+        if(data.hasOwnProperty('click')) {
+            actions.click = data.click;
+        }
+
         const divBlock = createDomElement('div', {
             ...baseOptions,
             id: data.title.toLowerCase(), // id: blockers, drivers, accelerators
             textContent: data.title,
-            class: [...baseOptions.class.split(' '), ...data.class.split(' ')] // Додаємо специфічний клас тексту
+            class: [...baseOptions.class.split(' '), ...data.class.split(' ')], // Додаємо специфічний клас тексту
+            actions: actions
         });
         
         fragment.appendChild(divBlock);
@@ -55,3 +62,7 @@ function createSectionBlocks() {
 // document.body.appendChild(sectionBlocks); 
 
 // console.log("Створено та вставлено три div-блоки.");
+
+function clickOnDriversBlock() {
+    console.log("clickOnDriversBlock");
+}
