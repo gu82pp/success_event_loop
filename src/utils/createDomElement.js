@@ -45,22 +45,30 @@ function createDomElement(tagName, options) {
         href, 
         src, 
         type,
-        data 
+        data = {} // створюємо якщо не було передано об'єкт data
     } = safeOptions;
+
+    // 4. Приватний метод для збереження подій у об'єкті data
+    if(!data.events) data.events = [];
 
     // 3. ФОРМУВАННЯ ТА ВСТАНОВЛЕННЯ ID
     let finalId;
     if (id && typeof id === 'string') {
         // console.log(" id", id)
         finalId = id;
-        checkId(id)
+
+        const el = World.element(id)
+        if(el) {
+            console.warn(`У DOM вже існує елемент з uuid ${id}. Це може призвести до помилок в роботі скриптів.`, safeOptions);
+        }
+        
     } else {
         const randomPart = generateSafeID();
         finalId = `${tagName}_${scope}_${randomPart}`;
         //  console.log("final id", finalId , safeOptions)
     }
     element.id = finalId;
-
+    
     // 4. ВСТАНОВЛЕННЯ КЛАСІВ
     if (classNames) {
         try {
@@ -70,7 +78,7 @@ function createDomElement(tagName, options) {
                 element.classList.add(...classNames);
             }
         } catch (e) {
-            console.warn(`Попередження: Невдалося встановити класи для <${tagName}>.`, e);
+            console.warn(`Попередження: Невдалося встановити класи для <${tagName}>.`, e, classNames);
         }
     }
 
@@ -90,31 +98,24 @@ function createDomElement(tagName, options) {
         Object.entries(actions).forEach(([eventName, handler]) => {
             if (typeof handler === 'function') {
                 element.addEventListener(eventName, handler);
+
+                
+                data.events.push({
+                    eventName: eventName,
+                    handler: handler
+                });
             } else {
                 console.error(`Помилка Actions: Обробник для події '${eventName}' у <${tagName}> не є функцією.`);
             }
         });
     }
 
-    rememberElement(element, scope, data);
+    World.addItem(element, scope, data)
 
     return element;
 }
 
-function rememberElement(element, scope, data = {}) {
-    if (!element) return;
-    World.Items[element.id] = {
-        element: element,
-        scope: scope,
-    }
-    World.ItemsData[element.id] = data;
-}
 
-function checkId(id) {
-    if (World.Items[id]) {
-        console.warn(`У DOM вже існує елемент з id ${id}. Це може призвести до помилок в роботі скриптів.`);
-    }
-}
 
 // ====================================================================
 // ПРИКЛАДИ ВИКОРИСТАННЯ

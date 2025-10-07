@@ -107,16 +107,16 @@ const loader = new QueueLoader();
 const scriptQueue = [
     // Партія 1: Завантажуються паралельно
     [   
+        './src/World.js',
         './src/utils/createDomElement.js',
         './src/utils/debugger.js',
-        './src/utils/memory.js',
         './src/utils/switchAnimation.js',
         './src/utils/Uuid.js',
     ], 
     
     // Партія 2: Завантажуються лише після завершення Партії 1, потім паралельно
     [
-        './src/components/1_buildHeaderCountentFooterOuter.js',
+        // './src/components/1_buildHeaderCountentFooterOuter.js',
         './src/components/2_buildHeaderDOM.js',
         './src/components/3_buildHeaderButtonOuter.js',
         './src/components/4_buildContentDOM.js',

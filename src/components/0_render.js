@@ -1,23 +1,47 @@
-function render() {
-    const page = document.getElementById("page");
-    const layout = buildHeaderCountentFooterOuter();
-    const header = buildHeaderDOM()
-    const content = buildContentDOM()
-    const footer = buildFooterDOM() // це можна і відкласти на пізніше
-
-    // Створення нового фрагменту
+/**
+ * @returns {DocumentFragment}
+ */
+function pageFragment() {
+    // Функція завжди має повертати фрагмент для вставки в DOM
     const fragment = document.createDocumentFragment();
+    
+    const baseOptions = { scope: 'layout-column', class: 'col' };
+    
+    // Створення <div id="header"></div>
+    const headerDiv = createDomElement('div', {
+        ...baseOptions,
+        id: 'header'
+    });
+
+    // Створення <div id="content"></div>
+    const contentDiv = createDomElement('div', {
+        ...baseOptions,
+        id: 'content'
+    });
+
+    // Створення <div id="footer"></div>
+    const footerDiv = createDomElement('div', {
+        ...baseOptions,
+        id: 'footer'
+    });
+
+    // Дочірні елементи ГАРАНТОВАНО будуть додані перед тим, як виведеться фрагмент на екран (браузер блокується!)
+    headerDiv.appendChild(buildHeaderDOM());
+    contentDiv.appendChild(buildContentDOM());
+    footerDiv.appendChild(buildFooterDOM());
 
     // Додавання елементів до фрагменту
-    fragment.appendChild(header);
-    fragment.appendChild(content);
-    fragment.appendChild(footer);
+    fragment.appendChild(headerDiv);
+    fragment.appendChild(contentDiv);
+    fragment.appendChild(footerDiv);
 
-    layout.appendChild(fragment);
+    return fragment;
+}
 
-    // Вставка фрагменту в DOM
-    page.appendChild(layout);
-    return false;
+function render() {
+    
+    const page = document.getElementById("page");
+    page.appendChild(pageFragment());
 }
 render()
-console.log("remembered", World.Items, World.ItemsData)
+console.log("remembered", World.items())

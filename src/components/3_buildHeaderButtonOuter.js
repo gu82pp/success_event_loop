@@ -20,7 +20,6 @@ function buildHeaderButtonOuter() {
     return outerDiv;
 }
 
-// ПРИПУЩЕННЯ: Функція createDomElement(tagName, options) існує.
 
 /**
  * Спрощена версія функції Button, що використовує createDomElement.
@@ -94,37 +93,93 @@ function createThreeButtons() {
 }
 
 function updateBadge(id, count) {
-    const element = World.getElement(id);
-    if (!element) {
+    const item = World.item(id)
+    if (!item) {
         console.error(`Element with id ${id} not found.`);
         return;
     }
-//   console.log("updateBadge", element, id, count)
-    World.ItemsData[element.id].count = count;
-    element.textContent = count.toString();
+    item.data.count = count;
+    item.element.textContent = count.toString();
 }
 
 function getBadgeCount(id) {
-    const element = World.getElement(id);
-    if (!element) {
-        console.error(`Element with id ${id} not found.`);
+    const item = World.item(id)
+    if (!item) {
+        console.error(`World item with id ${id} not found.`);
         return;
     }
 
-    return World.ItemsData[element.id].count;
+    return item.data.count;
 }
 
 function clickOnDriversButton() {
+    const item = World.element("drivers");
+    item.remove()
+    setTimeout(() => {
+       
+    }, 1000)
+    // return false
     const count = getBadgeCount('drivers-count');
     updateBadge('drivers-count', count + 1);
-}
+    showDrivers();
+}  
 
 function clickOnAcceleratorsButton() {
     const count = getBadgeCount('accelerators-count');    
-    updateBadge('accelerators-count', count + 1);    
+    updateBadge('accelerators-count', count + 1);  
+    showAccelerators()   
 }   
 
 function clickOnBlockersButton() {
     const count = getBadgeCount('blockers-count');
-    updateBadge('blockers-count', count + 1);        
+    updateBadge('blockers-count', count + 1);    
+    showBlockers()
+}
+
+function showDrivers() {
+    const driversBlock = World.element('drivers');
+    if (driversBlock) {
+        driversBlock.classList.remove('d-none');
+        hideAccelerators();
+        hideBlockers()
+    }
+}
+
+function showAccelerators() {
+    const acceleratorsBlock = World.element('accelerators');
+    if (acceleratorsBlock) {
+        acceleratorsBlock.classList.remove('d-none');
+        hideDrivers();
+        hideBlockers()
+    }
+}   
+
+function showBlockers() {
+    const blockersBlock = World.element('blockers');
+    if (blockersBlock) {
+        blockersBlock.classList.remove('d-none');
+        hideDrivers();
+        hideAccelerators()
+    }
+}
+
+function hideDrivers() {
+    const driversBlock = World.element('drivers');
+    if (driversBlock) {
+        driversBlock.classList.add('d-none');
+    }
+}
+
+function hideAccelerators() {
+    const acceleratorsBlock = World.element('accelerators');
+    if (acceleratorsBlock) {
+        acceleratorsBlock.classList.add('d-none');
+    }
+}   
+
+function hideBlockers() {
+    const blockersBlock = World.element('blockers');
+    if (blockersBlock) {
+        blockersBlock.classList.add('d-none');
+    }
 }
