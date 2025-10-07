@@ -36,17 +36,17 @@ function getJSMemoryUsage() {
     return null;
 }
 
-window.onerror = function(message, source, lineno, colno, error) {
-  console.error("Глобальна помилка часу виконання перехоплена:", {message, source, lineno, colno, error});
-  // Запобігає виклику обробника браузера за замовчуванням
-  return true; 
-};
+// window.onerror = function(message, source, lineno, colno, error) {
+//   console.error("Глобальна помилка часу виконання перехоплена:", {message, source, lineno, colno, error});
+//   // Запобігає виклику обробника браузера за замовчуванням
+//   return true; 
+// };
 
-window.addEventListener('unhandledrejection', function(event) {
-  console.error('Неперехоплене відхилення промісу:', event.reason);
-  // Можна залогірувати, але *зазвичай* не запобігає "падінню" в суворих середовищах
-  // Втім, це дозволяє вам реагувати на них.
-});
+// window.addEventListener('unhandledrejection', function(event) {
+//   console.error('Неперехоплене відхилення промісу:', event.reason);
+//   // Можна залогірувати, але *зазвичай* не запобігає "падінню" в суворих середовищах
+//   // Втім, це дозволяє вам реагувати на них.
+// });
 
 function ShowDOMRenderTime() {
     // console.log("ShowDOMRenderTime");

@@ -19,7 +19,7 @@ function createSectionBlocks() {
     // Дані для блоків
     const blockData = [
         { title: 'Blockers', class: 'text-danger d-block' },
-        { title: 'Drivers', class: 'text-primary d-block', click: clickOnDriversBlock },
+        { title: 'Drivers', class: 'text-primary d-block ', click: clickOnDriversBlock },
         { title: 'Accelerators', class: 'text-success d-none' }
     ];
 

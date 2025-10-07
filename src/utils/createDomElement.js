@@ -48,22 +48,7 @@ function createDomElement(tagName, options) {
     } = safeOptions;
 
     // 3. ФОРМУВАННЯ ТА ВСТАНОВЛЕННЯ ID
-    let finalId;
-    if (id && typeof id === 'string') {
-        // console.log(" id", id)
-        finalId = id;
-
-        const el = World.element(id)
-        if(el) {
-            console.warn(`У DOM вже існує елемент з uuid ${id}. Це може призвести до помилок в роботі скриптів.`, safeOptions);
-        }
-        
-    } else {
-        const randomPart = generateSafeID();
-        finalId = `${tagName}_${randomPart}`;
-        //  console.log("final id", finalId , safeOptions)
-    }
-    element.id = finalId;
+    element.id = createId(id, tagName);
     
     // 4. ВСТАНОВЛЕННЯ КЛАСІВ
     if (classNames) {
@@ -71,7 +56,7 @@ function createDomElement(tagName, options) {
             if (typeof classNames === 'string') {
                 element.classList.add(...classNames.split(' ').filter(c => c));
             } else if (Array.isArray(classNames)) {
-                element.classList.add(...classNames);
+                element.classList.add(...filterClassNames(classNames));
             }
         } catch (e) {
             console.warn(`Попередження: Невдалося встановити класи для <${tagName}>.`, e, classNames);
@@ -115,7 +100,42 @@ function createDomElement(tagName, options) {
     return element;
 }
 
+/**
+ * Фільтрує масив, залишаючи лише елементи, які є непорожніми рядками.
+ *
+ * @param {Array<any>} classesArray - Вхідний масив, що містить класи та інші значення.
+ * @returns {Array<string>} - Новий масив, що містить лише коректні рядкові класи.
+ */
+function filterClassNames(classesArray) {
+  return classesArray.filter(item => {
+    // 1. Перевіряємо, чи елемент є рядком (string)
+    const isString = typeof item === 'string';
 
+    // 2. Якщо це рядок, перевіряємо, чи він не порожній 
+    //    (після видалення пробілів по краях, хоча для класів це зазвичай не потрібно, 
+    //    але для надійності краще, або просто item !== '')
+    const isNotEmpty = item.trim() !== '';
+
+    return isString && isNotEmpty;
+  });
+}
+
+function createId(id, tagName) {
+    let finalId = "";
+    if (id && typeof id === 'string') {
+        finalId = id;
+
+        const el = World.element(id)
+        if(el) {
+            console.warn(`У DOM вже існує елемент з uuid ${id}. Це може призвести до помилок в роботі скриптів.`, safeOptions);
+        }
+        
+    } else {
+        const randomPart = generateSafeID();
+        finalId = `${tagName}_${randomPart}`;
+    }
+    return finalId;
+}
 
 // ====================================================================
 // ПРИКЛАДИ ВИКОРИСТАННЯ

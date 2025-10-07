@@ -92,7 +92,7 @@ class World
                     childItem.element.removeEventListener(eventName, handler); // Видаляємо події з дочірнього елемента
                     // console.log(`[Destroy Events] Видалено подію '${eventName}' з елемента ${id}.`);
                 });           
-                delete  World.Items[child.id]; 
+                delete World.Items[child.id]; 
             }
         });
         
