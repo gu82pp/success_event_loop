@@ -57,9 +57,14 @@ class Task {
         return this.list.filter(task => task.section === section && !task.isArchived);
     }
 
-    // tasks active by category
-    static getByCategory(categoryUuid) {
+    // tasks active by categoryUuid
+    static getByCategoryUuid(categoryUuid) {
         return this.list.filter(task => task.categoryUuid === categoryUuid && !task.isArchived);
+    }
+
+    // tasks active by category
+    static getByCategory(category) {
+        return this.list.filter(task => task.category === category && !task.isArchived);
     }
 
     // archived tasks
@@ -117,7 +122,11 @@ class Task {
 
 }
 
+for (const task of fakeTasks) {
+    Task.create(task);
+}
 
+console.log("Task.list", Task.all(), Task.getByCategory("blockers"));
 
 // console.table(Task.getAll());
 /*

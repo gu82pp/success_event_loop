@@ -1,8 +1,5 @@
 /**
- *      TODO: 
- *      - Опиши порядок завантеження скриптів у Loader.js
- *      - Оброби помилки
- *      - Стеж за памяттю, щоб не було витоків
+ * Клас World для зберігання всіх елементів в DOM.
  */
 class World
 {
@@ -51,12 +48,12 @@ class World
     static addItem(element, data = {}, events = []) {
         // Перевірка, чи є об'єкт елементом DOM і чи має він ID
         if (!element || typeof element.id !== 'string' || element.id.length === 0) {
-            console.error("Помилка: Елемент має бути DOM-нодою з унікальним непустим 'id'.", element);
+            console.warn("Помилка: Елемент має бути DOM-нодою з унікальним непустим 'id'.", element);
             return false;
         }
 
         if (World.Items.hasOwnProperty(element.id)) {
-            console.error("Помилка: Елемент з id", element.id, "вже існує в списку items.", element);
+            console.warn("Помилка: Елемент з id", element.id, "вже існує в списку items.", element);
             return false;
         }
 
@@ -68,11 +65,9 @@ class World
 
         return true;
     }
-    
-    
+
     /**
-     * видаляє елемент з DOM та реєстру.
-     * Спочатку видаляє зареєстровані дочірні елементи, щоб уникнути витоків пам'яті.
+     * Видаляє елемент з DOM та реєстру, включючи події, щоб уникнути витоків пам'яті.
      */
     static destroyItem(id) {
         const item = World.item(id);
@@ -107,6 +102,9 @@ class World
         return true;
     }
 
+    /**
+     * Повертає масив всіх подій, які зареєстровані в реєстрі World.Items.
+     */
     static events() {
         // проходжу по всьому масив items і додаю до масиву events всі події з кожного елемента
         const events = [];

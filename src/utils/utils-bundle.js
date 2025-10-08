@@ -46,7 +46,6 @@ function generateSafeID(preferShort = false) {
  *
  * @param {string} tagName - Обов'язкова назва HTML-тегу (наприклад, 'div', 'button', 'a').
  * @param {object} options - Об'єкт параметрів елемента.
- * @param {string} options.scope - Обов'язковий префікс для формування ID.
  * @param {string} [options.id] - Унікальний ідентифікатор елемента.
  * @param {string|Array<string>} [options.class] - Класи CSS для елемента.
  * @param {string} [options.textContent] - Текстовий вміст елемента (для більшості тегів).
@@ -57,7 +56,7 @@ function generateSafeID(preferShort = false) {
  * @param {object} [options.actions] - Об'єкт, де ключ — назва події, а значення — функція-обробник.
  * @returns {HTMLElement|null} Створений елемент DOM або null у разі критичної помилки.
  */
-function createDomElement(tagName, options) {
+function createDomElement(tagName, options = {}) {
     // 1. ПЕРЕВІРКА КРИТИЧНИХ ПАРАМЕТРІВ
     if (!tagName || typeof tagName !== 'string') {
         console.error("Критична помилка: Необхідно вказати валідний рядок tagName (наприклад, 'div').");
@@ -66,18 +65,12 @@ function createDomElement(tagName, options) {
     
     // Захист об'єкта options
     const safeOptions = options || {};
-
-    if (!safeOptions.scope || typeof safeOptions.scope !== 'string') {
-        console.error(`Критична помилка: Для елемента <${tagName}> обов'язково вкажіть параметр 'scope'.`);
-        return null;
-    }
     
     // 2. СТВОРЕННЯ ЕЛЕМЕНТА
     const element = document.createElement(tagName);
 
     // Деструктуризація для зручності
     const { 
-        scope, 
         id, 
         class: classNames, 
         textContent, 
@@ -86,32 +79,22 @@ function createDomElement(tagName, options) {
         href, 
         src, 
         type,
-        data 
+        data = {} // створюємо якщо не було передано об'єкт data
     } = safeOptions;
 
     // 3. ФОРМУВАННЯ ТА ВСТАНОВЛЕННЯ ID
-    let finalId;
-    if (id && typeof id === 'string') {
-        // console.log(" id", id)
-        finalId = id;
-        checkId(id)
-    } else {
-        const randomPart = generateSafeID();
-        finalId = `${tagName}_${scope}_${randomPart}`;
-        //  console.log("final id", finalId , safeOptions)
-    }
-    element.id = finalId;
-
+    element.id = createId(id, tagName);
+    
     // 4. ВСТАНОВЛЕННЯ КЛАСІВ
     if (classNames) {
         try {
             if (typeof classNames === 'string') {
                 element.classList.add(...classNames.split(' ').filter(c => c));
             } else if (Array.isArray(classNames)) {
-                element.classList.add(...classNames);
+                element.classList.add(...filterClassNames(classNames));
             }
         } catch (e) {
-            console.warn(`Попередження: Невдалося встановити класи для <${tagName}>.`, e);
+            console.warn(`Попередження: Невдалося встановити класи для <${tagName}>.`, e, classNames);
         }
     }
 
@@ -119,6 +102,10 @@ function createDomElement(tagName, options) {
     if (type !== undefined) element.setAttribute('type', type);
     if (href !== undefined) element.setAttribute('href', href);
     if (src !== undefined) element.setAttribute('src', src);
+    //  element.setAttribute('elementtiming', "main-title");
+
+
+
     if (value !== undefined) element.value = value; // Властивість value для форм
     
     // 6. ВСТАНОВЛЕННЯ ТЕКСТОВОГО ВМІСТУ
@@ -127,34 +114,62 @@ function createDomElement(tagName, options) {
     }
     
     // 7. ПРИКРІПЛЕННЯ СЛУХАЧІВ ПОДІЙ (ACTIONS)
+    const events = [];
     if (actions && typeof actions === 'object') {
         Object.entries(actions).forEach(([eventName, handler]) => {
             if (typeof handler === 'function') {
                 element.addEventListener(eventName, handler);
+
+                events.push({
+                    eventName: eventName,
+                    handler: handler
+                });
             } else {
                 console.error(`Помилка Actions: Обробник для події '${eventName}' у <${tagName}> не є функцією.`);
             }
         });
     }
 
-    rememberElement(element, scope, data);
+    World.addItem(element, data, events)
 
     return element;
 }
 
-function rememberElement(element, scope, data = {}) {
-    if (!element) return;
-    World.Items[element.id] = {
-        element: element,
-        scope: scope,
-    }
-    World.ItemsData[element.id] = data;
+/**
+ * Фільтрує масив, залишаючи лише елементи, які є непорожніми рядками.
+ *
+ * @param {Array<any>} classesArray - Вхідний масив, що містить класи та інші значення.
+ * @returns {Array<string>} - Новий масив, що містить лише коректні рядкові класи.
+ */
+function filterClassNames(classesArray) {
+  return classesArray.filter(item => {
+    // 1. Перевіряємо, чи елемент є рядком (string)
+    const isString = typeof item === 'string';
+
+    // 2. Якщо це рядок, перевіряємо, чи він не порожній 
+    //    (після видалення пробілів по краях, хоча для класів це зазвичай не потрібно, 
+    //    але для надійності краще, або просто item !== '')
+    const isNotEmpty = item.trim() !== '';
+
+    return isString && isNotEmpty;
+  });
 }
 
-function checkId(id) {
-    if (World.Items[id]) {
-        console.warn(`У DOM вже існує елемент з id ${id}. Це може призвести до помилок в роботі скриптів.`);
+function createId(id, tagName) {
+    let finalId = "";
+    if (id && typeof id === 'string') {
+        finalId = id;
+
+        const el = World.element(id)
+        if(el) {
+            console.warn(`У DOM вже існує елемент з uuid ${id}. Це може призвести до помилок в роботі скриптів.`);
+        }
+        
+    } else {
+        const randomPart = generateSafeID();
+        finalId = `${tagName}_${randomPart}`;
     }
+    return finalId;
 }
 
 // ====================================================================
@@ -221,8 +236,6 @@ class Debugger
     }
 }
 
-
-/* --- Початок файлу: ./memory.js --- */
 /**
  * Повертає звіт про пам'ять, яку використовує JavaScript-рушій.
  * Примітка: Доступно лише у Chrome/Vivaldi/Edge.
@@ -241,17 +254,65 @@ function getJSMemoryUsage() {
     return null;
 }
 
-// const memory_stats = document.getElementById('memory_stats');
-// showStats();
-// setInterval(() => {
-//     showStats();
-// }, 1000);
+// window.onerror = function(message, source, lineno, colno, error) {
+//   console.error("Глобальна помилка часу виконання перехоплена:", {message, source, lineno, colno, error});
+//   // Запобігає виклику обробника браузера за замовчуванням
+//   return true; 
+// };
 
-// function showStats() {
-//     if (memory_stats) {
-//         memory_stats.textContent = `Використано пам'яті JS: ${getJSMemoryUsage().usedJSHeapSize} МБ`;
-//     }
-// }
+// window.addEventListener('unhandledrejection', function(event) {
+//   console.error('Неперехоплене відхилення промісу:', event.reason);
+//   // Можна залогірувати, але *зазвичай* не запобігає "падінню" в суворих середовищах
+//   // Втім, це дозволяє вам реагувати на них.
+// });
+
+function ShowDOMRenderTime() {
+    // console.log("ShowDOMRenderTime");
+    // element.setAttribute('elementtiming', "main-title");
+    // https://developer.mozilla.org/en-US/docs/Web/API/PerformanceElementTiming
+    const observer = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+            console.log(entry);
+        });
+    });
+    observer.observe({ type: "element", buffered: true });
+}
+
+/* --- Початок файлу: ./proxyEvent.js --- */
+/**
+ * Це проксі функція, яка дозволяє програмі не падати, в разі якщо якоїсь функції немає
+ * @param {+} func 
+ * @param {*} args 
+ * @returns 
+ */
+function safeEvent(func, args = {}) {
+    try {
+        return func(args);
+    }   catch (error) {
+        console.warn("Помилка в функції: ", error);
+        return defaultEvent;
+    }
+}
+
+function defaultEvent() {
+    console.log("defaultEvent");
+}
+
+/* --- Початок файлу: ./proxyFragment.js --- */
+/**
+ * Це проксі функція, яка дозволяє програмі не падати, в разі якщо якоїсь функції немає
+ * @param {+} func 
+ * @param {*} args 
+ * @returns 
+ */
+function safeFragment(func, args = {}) {
+    try {
+        return func(args);
+    }   catch (error) {
+        console.warn("Помилка в функції: ", error);
+        return document.createDocumentFragment();
+    }
+}
 
 /* --- Початок файлу: ./switchAnimation.js --- */
 /**

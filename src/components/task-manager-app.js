@@ -1,95 +1,156 @@
 /* --- Початок файлу: ./0_render.js --- */
-function render() {
-    const page = document.getElementById("page");
-    const layout = buildHeaderCountentFooterOuter();
-    const header = buildHeaderDOM()
-    const content = buildContentDOM()
-    const footer = buildFooterDOM() // це можна і відкласти на пізніше
-
-    // Створення нового фрагменту
+/**
+ * @returns {DocumentFragment}
+ */
+function pageFragment() {
     const fragment = document.createDocumentFragment();
-
-    // Додавання елементів до фрагменту
-    fragment.appendChild(header);
-    fragment.appendChild(content);
-    fragment.appendChild(footer);
-
-    layout.appendChild(fragment);
-
-    // Вставка фрагменту в DOM
-    page.appendChild(layout);
-    return false;
-}
-render()
-console.log("remembered", World.Items, World.ItemsData)
-
-/* --- Початок файлу: ./1_buildHeaderCountentFooterOuter.js --- */
-function buildHeaderCountentFooterOuter() {
-    // 1. Створення DocumentFragment (легкий контейнер у пам'яті)
-    const fragment = document.createDocumentFragment();
-
-    // Загальні параметри для всіх колонок
-    const baseOptions = { scope: 'layout-column', class: 'col' };
-
-    // 2. Створення елементів за допомогою універсальної функції
     
-    // Створення <div id="header"></div>
     const headerDiv = createDomElement('div', {
-        ...baseOptions,
-        id: 'header'
+        id: 'header',
+        class: 'col',
     });
 
-    // Створення <div id="content"></div>
     const contentDiv = createDomElement('div', {
-        ...baseOptions,
-        id: 'content'
+        id: 'content',
+        class: 'col',
     });
 
-    // Створення <div id="footer"></div>
     const footerDiv = createDomElement('div', {
-        ...baseOptions,
-        id: 'footer'
+        id: 'footer',
+        class: 'col',
     });
 
-    // 3. Додавання елементів до фрагмента (все ще в пам'яті)
+    headerDiv.appendChild( safeFragment(headerFragment) );
+    contentDiv.appendChild( safeFragment(contentFragment) );
+    footerDiv.appendChild( safeFragment(buildFooterDOM) );
+
     fragment.appendChild(headerDiv);
     fragment.appendChild(contentDiv);
     fragment.appendChild(footerDiv);
 
-    // 4. Повернення фрагмента
     return fragment;
 }
 
+function render() {
+    const page = document.getElementById("page");
+    page.appendChild( safeFragment(pageFragment) );
+}
 
-/* --- Початок файлу: ./2_buildHeaderDOM.js --- */
-function buildHeaderDOM() {
+render()
 
-    // Створення нового фрагменту
+
+
+/* --- Початок файлу: ./1_reusableFragments.js --- */
+/**
+ * Типовий фрагмент для вставки між елементами.
+ * @returns {DocumentFragment}
+ */
+function divFragment(className = '') {
+    // TODO: якщо повертати фрагмент, то в нього неможливо пізніше додати
+    return outerDiv = createDomElement('div', {
+        class: className
+    });
+}
+
+/**
+ * Типовий фрагмент для вставки між елементами.
+ * @returns {DocumentFragment}
+ */
+function divBetweenFragment() {
+    return createDomElement('div', {
+        class: 'd-flex justify-content-between'
+    });
+}
+
+/* --- Початок файлу: ./2_headerFragment.js --- */
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function headerFragment() {
     const fragment = document.createDocumentFragment();
 
-    // 1. Створення внутрішнього елемента <a> (Посилання)
+    const linkOuter = createDomElement('div');
+          linkOuter.appendChild( safeFragment(h1Fragment) );
+
+    fragment.appendChild(linkOuter);
+    fragment.appendChild( safeFragment(headerButtonsFragment) );
+    return fragment;
+}
+
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function h1Fragment() {
+    const fragment = document.createDocumentFragment();
+
     const linkElement = createDomElement('a', {
-        scope: 'app-link', // Обов'язковий scope
         textContent: 'Success Event Loop',
-        href: 'https://gu82pp.github.io/success_event_loop/', // Специфічний атрибут для <a>
+        href: 'https://gu82pp.github.io/success_event_loop',
     });
 
-    // 2. Створення зовнішнього елемента <h1>
-    const headerElement = createDomElement('h1', {
-        scope: 'app-header', // Обов'язковий scope
-        class: ['mb-4', 'text-center'], // Класи Bootstrap для стилізації
+    const h1 = createDomElement('h1', {
+        class: ['mb-4', 'text-center']
     });
 
-    // 3. Вкладення елементів: <h1> вкладає <a>
-    headerElement.appendChild(linkElement);
-
-    fragment.appendChild(headerElement);
-    fragment.appendChild(buildHeaderButtonOuter());
+    h1.appendChild(linkElement);
+    fragment.appendChild(h1);
 
     return fragment;
 }
 
-/* --- Початок файлу: ./3_buildHeaderButtonOuter.js --- */
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function headerButtonsFragment() {
+    const fragment = document.createDocumentFragment();
+
+    const outer = divBetweenFragment();
+
+    const left = createDomElement('div', {
+        id: 'buttons-container', 
+        class: ['col', 'd-flex', 'justify-content-start']
+    });
+    left.appendChild( safeFragment(createThreeButtons) );
+
+    
+    const right = createDomElement('div', {});
+    right.appendChild( safeFragment(newTaskButtonFragment));
+
+    outer.appendChild(left);    
+    outer.appendChild(right);
+
+    fragment.appendChild(outer);
+    return fragment;
+}
+
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function newTaskButtonFragment() {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(createDomElement('button', {
+        textContent: 'New Task'
+    }));
+    return fragment;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function buildHeaderButtonOuter() {
 
     // 1. Створення внутрішнього елемента (Контейнер для кнопок)
@@ -107,12 +168,11 @@ function buildHeaderButtonOuter() {
 
     // 3. Вкладення елементів: Зовнішній <div> вкладає Внутрішній <div>
     outerDiv.appendChild(innerDiv);
-    innerDiv.appendChild(createThreeButtons());
+   innerDiv.appendChild(createThreeButtons());
 
     return outerDiv;
 }
 
-// ПРИПУЩЕННЯ: Функція createDomElement(tagName, options) існує.
 
 /**
  * Спрощена версія функції Button, що використовує createDomElement.
@@ -144,7 +204,7 @@ function HeaderButton({ title, count = 0, click, badgeId }) {
         }
     });
 
-    console.log("badgeSpan", badgeSpan, badgeId)
+    // console.log("badgeSpan", badgeSpan, badgeId)
     
     // Вкладення
     button.appendChild(textSpan);
@@ -186,47 +246,130 @@ function createThreeButtons() {
 }
 
 function updateBadge(id, count) {
-    const element = World.getElement(id);
-    if (!element) {
+    const item = World.item(id)
+    if (!item) {
         console.error(`Element with id ${id} not found.`);
         return;
     }
-    console.log("updateBadge", element, id, count)
-    World.ItemsData[element.id].count = count;
-    element.textContent = count.toString();
+    item.data.count = count;
+    item.element.textContent = count.toString();
 }
 
 function getBadgeCount(id) {
-    const element = World.getElement(id);
-    if (!element) {
-        console.error(`Element with id ${id} not found.`);
+    const item = World.item(id)
+    if (!item) {
+        console.error(`World item with id ${id} not found.`);
         return;
     }
 
-    return World.ItemsData[element.id].count;
+    return item.data.count;
 }
 
 function clickOnDriversButton() {
+    const item = World.element("drivers");
+    // return false
     const count = getBadgeCount('drivers-count');
     updateBadge('drivers-count', count + 1);
-}
+    showDrivers();
+}  
 
 function clickOnAcceleratorsButton() {
     const count = getBadgeCount('accelerators-count');    
-    updateBadge('accelerators-count', count + 1);    
+    updateBadge('accelerators-count', count + 1);  
+    showAccelerators()   
 }   
 
 function clickOnBlockersButton() {
     const count = getBadgeCount('blockers-count');
-    updateBadge('blockers-count', count + 1);        
+    updateBadge('blockers-count', count + 1);    
+    showBlockers()
 }
 
-/* --- Початок файлу: ./4_buildContentDOM.js --- */
-function buildContentDOM() {
-    // TODO: створити компонент з базовим шаблоном
-    // Створення нового фрагменту
+function showDrivers() {
+    const driversBlock = World.element('drivers');
+    if (driversBlock) {
+        driversBlock.classList.remove('d-none');
+        hideAccelerators();
+        hideBlockers()
+    }
+}
+
+function showAccelerators() {
+    const acceleratorsBlock = World.element('accelerators');
+    if (acceleratorsBlock) {
+        acceleratorsBlock.classList.remove('d-none');
+        hideDrivers();
+        hideBlockers()
+    }
+}   
+
+function showBlockers() {
+    const blockersBlock = World.element('blockers');
+    if (blockersBlock) {
+        blockersBlock.classList.remove('d-none');
+        hideDrivers();
+        hideAccelerators()
+    }
+}
+
+function hideDrivers() {
+    const driversBlock = World.element('drivers');
+    if (driversBlock) {
+        driversBlock.classList.add('d-none');
+    }
+}
+
+function hideAccelerators() {
+    const acceleratorsBlock = World.element('accelerators');
+    if (acceleratorsBlock) {
+        acceleratorsBlock.classList.add('d-none');
+    }
+}   
+
+function hideBlockers() {
+    const blockersBlock = World.element('blockers');
+    if (blockersBlock) {
+        blockersBlock.classList.add('d-none');
+    }
+}
+
+/* --- Початок файлу: ./4_contentFragment.js --- */
+function contentFragment() {
     const fragment = document.createDocumentFragment();
+
+    const outer = divFragment('mt-3 mb-3');
+
+    const blockersBlock = createDomElement('div', {
+        id: 'blockers',
+        textContent: 'Blockers',
+        class: 'p-2 border rounded text-danger d-blok',
+    });
+    
+    const driversBlock = createDomElement('div', {
+        id: 'drivers',
+        textContent: 'Drivers',
+        class: 'p-2 border rounded text-primary d-none',
+        actions: {
+            click: clickOnDriversBlock
+        }
+    });
+    
+    const acceleratorsBlock = createDomElement('div', {
+        id: 'accelerators',
+        textContent: 'Accelerators',
+        class: 'p-2 border rounded text-success d-none'
+    });
+
+    outer.appendChild(blockersBlock);
+    outer.appendChild(driversBlock);
+    outer.appendChild(acceleratorsBlock);
+
+    fragment.appendChild(outer);
     return fragment;
+}
+
+function clickOnDriversBlock() {
+    console.log("clickOnDriversBlock");
 }
 
 /* --- Початок файлу: ./5_buildFooterDOM.js --- */
@@ -234,6 +377,27 @@ function buildFooterDOM() {
     // TODO: створити компонент з базовим шаблоном
         // Створення нового фрагменту
     const fragment = document.createDocumentFragment();
+    fragment.appendChild(createMemoryUsageBlock());
     return fragment;
 }
+
+/**
+ * Створює елемент <div> для відображення використання пам'яті у футері.
+ * * @param {function} createDomElement - Ваша універсальна функція-будівельник DOM.
+ * @returns {HTMLElement} Створений елемент <div>.
+ */
+function createMemoryUsageBlock() {
+    const memoryText = `Memory usage: ${getJSMemoryUsage().usedJSHeapSize} / ${getJSMemoryUsage().totalJSHeapSize} MB`;
+
+    // Створення <div>
+    const memoryDiv = createDomElement('div', {
+        scope: 'footer-status', // Обов'язковий scope
+        id: 'memory-indicator', // ID для подальшого оновлення
+        class: ['p-2', 'bg-light', 'text-muted', 'text-end', 'small'], // Класи Bootstrap для стилізації
+        textContent: memoryText
+    });
+
+    return memoryDiv;
+}
+
 

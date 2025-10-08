@@ -1,3 +1,91 @@
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function headerFragment() {
+    const fragment = document.createDocumentFragment();
+
+    const linkOuter = createDomElement('div');
+          linkOuter.appendChild( safeFragment(h1Fragment) );
+
+    fragment.appendChild(linkOuter);
+    fragment.appendChild( safeFragment(headerButtonsFragment) );
+    return fragment;
+}
+
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function h1Fragment() {
+    const fragment = document.createDocumentFragment();
+
+    const linkElement = createDomElement('a', {
+        textContent: 'Success Event Loop',
+        href: 'https://gu82pp.github.io/success_event_loop',
+    });
+
+    const h1 = createDomElement('h1', {
+        class: ['mb-4', 'text-center']
+    });
+
+    h1.appendChild(linkElement);
+    fragment.appendChild(h1);
+
+    return fragment;
+}
+
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function headerButtonsFragment() {
+    const fragment = document.createDocumentFragment();
+
+    const outer = divBetweenFragment();
+
+    const left = createDomElement('div', {
+        id: 'buttons-container', 
+        class: ['col', 'd-flex', 'justify-content-start']
+    });
+    left.appendChild( safeFragment(createThreeButtons) );
+
+    
+    const right = createDomElement('div', {});
+    right.appendChild( safeFragment(newTaskButtonFragment));
+
+    outer.appendChild(left);    
+    outer.appendChild(right);
+
+    fragment.appendChild(outer);
+    return fragment;
+}
+
+/**
+ * 
+ * @returns {DocumentFragment}
+ */
+function newTaskButtonFragment() {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(createDomElement('button', {
+        textContent: 'New Task'
+    }));
+    return fragment;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function buildHeaderButtonOuter() {
 
     // 1. Створення внутрішнього елемента (Контейнер для кнопок)
@@ -15,7 +103,7 @@ function buildHeaderButtonOuter() {
 
     // 3. Вкладення елементів: Зовнішній <div> вкладає Внутрішній <div>
     outerDiv.appendChild(innerDiv);
-    innerDiv.appendChild(createThreeButtons());
+   innerDiv.appendChild(createThreeButtons());
 
     return outerDiv;
 }
@@ -68,9 +156,9 @@ function createThreeButtons() {
 
     // Дані для кнопок
     const buttonData = [
-        { title: 'Blockers', count: 5, badgeId: 'blockers-count', click: clickOnBlockersButton },
-        { title: 'Drivers', count: 12, badgeId: 'drivers-count', click: clickOnDriversButton, },
-        { title: 'Accelerators', count: 0, badgeId: 'accelerators-count', click: clickOnAcceleratorsButton }
+        { title: 'Blockers', count: Task.getByCategory("blockers").length, badgeId: 'blockers-count', click: clickOnBlockersButton },
+        { title: 'Drivers', count: Task.getByCategory("drivers").length, badgeId: 'drivers-count', click: clickOnDriversButton, },
+        { title: 'Accelerators', count: Task.getByCategory("accelerators").length, badgeId: 'accelerators-count', click: clickOnAcceleratorsButton }
     ];
 
     const fragment = document.createDocumentFragment();
@@ -114,10 +202,6 @@ function getBadgeCount(id) {
 
 function clickOnDriversButton() {
     const item = World.element("drivers");
-    // item.remove()
-    World.destroyItem('drivers');
-    console.log("_ items", _.items(), "_ eventsList", _.events());
-
     // return false
     const count = getBadgeCount('drivers-count');
     updateBadge('drivers-count', count + 1);

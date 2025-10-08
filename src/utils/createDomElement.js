@@ -5,7 +5,6 @@
  *
  * @param {string} tagName - Обов'язкова назва HTML-тегу (наприклад, 'div', 'button', 'a').
  * @param {object} options - Об'єкт параметрів елемента.
- * @param {string} options.scope - Обов'язковий префікс для формування ID.
  * @param {string} [options.id] - Унікальний ідентифікатор елемента.
  * @param {string|Array<string>} [options.class] - Класи CSS для елемента.
  * @param {string} [options.textContent] - Текстовий вміст елемента (для більшості тегів).
@@ -16,7 +15,7 @@
  * @param {object} [options.actions] - Об'єкт, де ключ — назва події, а значення — функція-обробник.
  * @returns {HTMLElement|null} Створений елемент DOM або null у разі критичної помилки.
  */
-function createDomElement(tagName, options) {
+function createDomElement(tagName, options = {}) {
     // 1. ПЕРЕВІРКА КРИТИЧНИХ ПАРАМЕТРІВ
     if (!tagName || typeof tagName !== 'string') {
         console.error("Критична помилка: Необхідно вказати валідний рядок tagName (наприклад, 'div').");
@@ -25,11 +24,6 @@ function createDomElement(tagName, options) {
     
     // Захист об'єкта options
     const safeOptions = options || {};
-
-    if (!safeOptions.scope || typeof safeOptions.scope !== 'string') {
-        console.error(`Критична помилка: Для елемента <${tagName}> обов'язково вкажіть параметр 'scope'.`);
-        return null;
-    }
     
     // 2. СТВОРЕННЯ ЕЛЕМЕНТА
     const element = document.createElement(tagName);
@@ -127,7 +121,7 @@ function createId(id, tagName) {
 
         const el = World.element(id)
         if(el) {
-            console.warn(`У DOM вже існує елемент з uuid ${id}. Це може призвести до помилок в роботі скриптів.`, safeOptions);
+            console.warn(`У DOM вже існує елемент з uuid ${id}. Це може призвести до помилок в роботі скриптів.`);
         }
         
     } else {

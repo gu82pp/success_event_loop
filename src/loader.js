@@ -107,19 +107,22 @@ const loader = new QueueLoader();
 const scriptQueue = [
     // Партія 1: Завантажуються паралельно
     [   
+        './src/data/fake_data.js',
         './src/World.js',
         './src/utils/createDomElement.js',
         './src/utils/debugger.js',
         './src/utils/switchAnimation.js',
         './src/utils/Uuid.js',
+        './src/utils/proxyEvent.js', //  При виклику `addEventListener()` на будь-якій ноді краще визивати функцію через проксі: `safeEvent()`
+        './src/utils/proxyFragment.js', //  При виклику `appendChild()` на будь-якій ноді краще визивати функцію через проксі: `safeFragment()`
     ], 
     
     // Партія 2: Завантажуються лише після завершення Партії 1, потім паралельно
     [
-        // './src/components/1_buildHeaderCountentFooterOuter.js',
-        './src/components/2_buildHeaderDOM.js',
-        './src/components/3_buildHeaderButtonOuter.js',
-        './src/components/4_buildContentDOM.js',
+        './src/Task.js',
+        './src/components/1_reusableFragments.js',
+        './src/components/2_headerFragment.js',
+        './src/components/4_contentFragment.js',
         './src/components/5_buildFooterDOM.js',
     ], 
     [
