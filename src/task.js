@@ -128,6 +128,8 @@ for (const task of fakeTasks) {
 
 console.log("Task.list", Task.all(), Task.getByCategory("blockers"));
 
+
+
 // console.table(Task.getAll());
 /*
 Task.update({
