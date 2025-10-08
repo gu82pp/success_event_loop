@@ -119,7 +119,7 @@ const scriptQueue = [
     
     // Партія 2: Завантажуються лише після завершення Партії 1, потім паралельно
     [
-        './src/Task.js',
+        './src/task.js',
         './src/components/1_reusableFragments.js',
         './src/components/2_headerFragment.js',
         './src/components/4_contentFragment.js',
