@@ -40,6 +40,9 @@ render()
 
 
 
+
+
+
 /* --- Початок файлу: ./1_reusableFragments.js --- */
 /**
  * Типовий фрагмент для вставки між елементами.
@@ -61,6 +64,10 @@ function divBetweenFragment() {
         class: 'd-flex justify-content-between'
     });
 }
+
+
+
+
 
 /* --- Початок файлу: ./2_headerFragment.js --- */
 /**
@@ -221,9 +228,9 @@ function createThreeButtons() {
 
     // Дані для кнопок
     const buttonData = [
-        { title: 'Blockers', count: 5, badgeId: 'blockers-count', click: clickOnBlockersButton },
-        { title: 'Drivers', count: 12, badgeId: 'drivers-count', click: clickOnDriversButton, },
-        { title: 'Accelerators', count: 0, badgeId: 'accelerators-count', click: clickOnAcceleratorsButton }
+        { title: 'Blockers', count: Task.getByCategory("blockers").length, badgeId: 'blockers-count', click: clickOnBlockersButton },
+        { title: 'Drivers', count: Task.getByCategory("drivers").length, badgeId: 'drivers-count', click: clickOnDriversButton, },
+        { title: 'Accelerators', count: Task.getByCategory("accelerators").length, badgeId: 'accelerators-count', click: clickOnAcceleratorsButton }
     ];
 
     const fragment = document.createDocumentFragment();
@@ -279,11 +286,6 @@ function clickOnAcceleratorsButton() {
     showAccelerators()   
 }   
 
-function clickOnBlockersButton() {
-    const count = getBadgeCount('blockers-count');
-    updateBadge('blockers-count', count + 1);    
-    showBlockers()
-}
 
 function showDrivers() {
     const driversBlock = World.element('drivers');
@@ -332,6 +334,29 @@ function hideBlockers() {
         blockersBlock.classList.add('d-none');
     }
 }
+
+/**
+ * 
+ */
+function clickOnBlockersButton() {
+    const count = getBadgeCount('blockers-count');
+    updateBadge('blockers-count', count + 1);    
+
+    showBlockers()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* --- Початок файлу: ./4_contentFragment.js --- */
 function contentFragment() {

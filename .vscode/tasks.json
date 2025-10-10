@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Success Event Loop -> Compilation",
+            "type": "shell",
+            "command": "./src/components/__compiler.command",
+            "group": "build",
+            
+            "presentation": { 
+                "reveal": "silent", 
+                "panel": "shared",
+                "close": true
+            },
+            "problemMatcher": [] 
+
+        }
+    ]
+}

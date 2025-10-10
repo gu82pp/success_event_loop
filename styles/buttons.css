@@ -27,3 +27,64 @@
     /* Прибираємо тінь, щоб імітувати, що кнопка "втопилася" */
     box-shadow: 0 0 0 0 #0056b3; 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. Скриваємо оригінальний бейдж під час анімації */
+.badge-hide {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+/* 2. Базовий стиль для кожного "уламка" */
+.shatter-fragment {
+    position: absolute; /* Потрібен для контролю позиції */
+    font-weight: bold;
+    color: #444; /* Колір уламка */
+    opacity: 1;
+    transition: none; /* Забороняємо переходи, щоб контролювати рух через @keyframes */
+    will-change: transform, opacity; /* Оптимізація продуктивності */
+}
+
+/* 3. Анімація розльоту */
+@keyframes shatter-out {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        /* Кожен уламок буде мати власні значення у JS, це лише шаблон */
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+        opacity: 0;
+    }
+}
+
+/* 4. Анімація появи нового числа (просте масштабування) */
+@keyframes new-count-pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Застосування анімації появи до нового бейджу */
+.badge.new {
+    animation: new-count-pop 0.5s ease-out;
+}

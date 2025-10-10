@@ -214,11 +214,6 @@ function clickOnAcceleratorsButton() {
     showAccelerators()   
 }   
 
-function clickOnBlockersButton() {
-    const count = getBadgeCount('blockers-count');
-    updateBadge('blockers-count', count + 1);    
-    showBlockers()
-}
 
 function showDrivers() {
     const driversBlock = World.element('drivers');
@@ -267,3 +262,25 @@ function hideBlockers() {
         blockersBlock.classList.add('d-none');
     }
 }
+
+/**
+ * 
+ */
+function clickOnBlockersButton() {
+    const count = getBadgeCount('blockers-count');
+    updateBadge('blockers-count', count + 1);    
+
+    showBlockers()
+}
+
+
+
+
+
+
+
+
+
+
+
+
